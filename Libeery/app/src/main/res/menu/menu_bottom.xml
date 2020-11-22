@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    app:cnb_unselectedColor="#fff"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/beers"
+        android:title="Beers"
+        android:icon="@drawable/ic_beer_black"
+        app:cnb_backgroundColor="#009688"
+        app:cnb_iconColor="#fff"
+        app:cnb_textColor="#fff"
+        />
+    <item
+        android:id="@+id/favorites"
+        android:title="Favorites"
+        android:icon="@drawable/ic_like"
+        app:cnb_backgroundColor="#009688"
+        app:cnb_iconColor="#fff"
+        app:cnb_textColor="#fff"
+        />
+    <item
+        android:id="@+id/profile"
+        android:title="Profil"
+        android:icon="@drawable/ic_user"
+        app:cnb_backgroundColor="#009688"
+        app:cnb_iconColor="#fff"
+        app:cnb_textColor="#fff"
+        />
+</menu>
