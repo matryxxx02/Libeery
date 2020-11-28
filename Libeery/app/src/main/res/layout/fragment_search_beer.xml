@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
-    tools:context=".SearchBeerFragment">
+    tools:context=".view.SearchBeerFragment">
 
     <EditText
         android:id="@+id/searchBeerText"
@@ -18,10 +18,11 @@
         android:layout_marginEnd="50dp"
         android:ems="10"
         android:hint="@string/searchBeerHint"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:importantForAutofill="no" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/recyclerViewSearch"
         android:layout_width="349dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/searchBeerText"

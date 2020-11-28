@@ -1,4 +1,4 @@
-package com.example.libeery;
+package com.example.libeery.view;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+
+import com.example.libeery.R;
 
 public class ProfileFragment extends Fragment {
     public ProfileFragment() {

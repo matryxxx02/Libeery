@@ -1,4 +1,4 @@
-package com.example.libeery;
+package com.example.libeery.data;
 
 public class Beer {
 
