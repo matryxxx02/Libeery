@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Libeery</string>
+    <string name="searchBeerHint">Search a beer...</string>
 </resources>

@@ -3,15 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFC107"
+    android:background="#fff"
     tools:context=".SearchBeerFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/searchBeerText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Beers"
-        android:textColor="#fff"
-        android:textSize="26sp"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="50dp"
+        android:ems="10"
+        android:hint="@string/searchBeerHint"
+        android:inputType="textPersonName" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="349dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/searchBeerText"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="82dp"
+        android:paddingBottom="50dp" />
 
 </RelativeLayout>
