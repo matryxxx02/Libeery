@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, currentFragment)
-                .commit();
+                .commit();      
 
 
         navBar.setOnItemSelectedListener(id -> {

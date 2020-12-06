@@ -17,12 +17,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libeery.R;
+import com.example.libeery.api.BeerApi;
+import com.example.libeery.api.BeerClient;
 import com.example.libeery.data.Beer;
 import com.example.libeery.data.DataGenerator;
 import com.example.libeery.model.ListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SearchBeerFragment extends Fragment {
 
@@ -133,6 +139,23 @@ public class SearchBeerFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        //TEST APIII
+        //TODO: recup les datas du body et les parse en Beer
+        Call<Beer> mealsCall = BeerClient.getBeerClient().create(BeerApi.class).getMBeers();
+        mealsCall.enqueue(new Callback<Beer>() {
+            @Override
+            public void onResponse(@NonNull Call<Beer> call, @NonNull Response<Beer> response) {
+                System.out.println(response.body().toString());
+
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Beer> call, @NonNull Throwable t) {
 
             }
         });
