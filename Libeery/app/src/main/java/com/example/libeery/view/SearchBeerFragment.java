@@ -20,6 +20,7 @@ import com.example.libeery.R;
 import com.example.libeery.api.BeerApi;
 import com.example.libeery.api.BeerClient;
 import com.example.libeery.data.Beer;
+import com.example.libeery.data.Beers;
 import com.example.libeery.data.DataGenerator;
 import com.example.libeery.model.ListViewModel;
 
@@ -145,17 +146,17 @@ public class SearchBeerFragment extends Fragment {
 
         //TEST APIII
         //TODO: recup les datas du body et les parse en Beer
-        Call<Beer> mealsCall = BeerClient.getBeerClient().create(BeerApi.class).getMBeers();
-        mealsCall.enqueue(new Callback<Beer>() {
+        Call<Beers> mealsCall = BeerClient.getBeerClient().create(BeerApi.class).getBeers();
+        mealsCall.enqueue(new Callback<Beers>() {
             @Override
-            public void onResponse(@NonNull Call<Beer> call, @NonNull Response<Beer> response) {
-                System.out.println(response.body().toString());
-
+            public void onResponse(@NonNull Call<Beers> call, @NonNull Response<Beers> response) {
+                List<Beers.Beer> b = response.body().getBeers();
+                System.out.println(b.get(1).toString());
 
             }
 
             @Override
-            public void onFailure(@NonNull Call<Beer> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Beers> call, @NonNull Throwable t) {
 
             }
         });
