@@ -58,8 +58,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
         public void display(Beer beer) {
             nameTextView.setText(beer.getName());
-            catNameTextView.setText(beer.getCatName());
-            countryTextView.setText(beer.getCountry());
+            catNameTextView.setText(beer.getNameDisplay());
+            countryTextView.setText(beer.getStyle().getShortName());
             favoriteImage.setImageResource(0);
         }
     }

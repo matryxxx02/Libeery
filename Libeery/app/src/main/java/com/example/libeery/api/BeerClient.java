@@ -9,7 +9,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class BeerClient {
-    private static final String BASE_URL = "https://data.opendatasoft.com/api/records/1.0/";
+    private static final String BASE_URL = "https://api.brewerydb.com/v2/";
+    //https://api.brewerydb.com/v2/search?key=325db7a335e682c607ad018cc1b32151&q=bud&type=beer
 
     public static Retrofit getBeerClient() {
         return new Retrofit.Builder().baseUrl(BASE_URL)

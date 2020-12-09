@@ -23,6 +23,7 @@ import com.example.libeery.data.Beer;
 import com.example.libeery.data.Beers;
 import com.example.libeery.data.DataGenerator;
 import com.example.libeery.model.ListViewModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,7 @@ public class SearchBeerFragment extends Fragment {
             public TextView catNameTextView;
             public TextView countryTextView;
             public ImageView favoriteImage;
+            public ImageView beerImage;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -73,8 +75,9 @@ public class SearchBeerFragment extends Fragment {
                 this.catNameTextView = itemView.findViewById(R.id.catNameTextView);
                 this.countryTextView = itemView.findViewById(R.id.countryTextView);
                 this.favoriteImage = itemView.findViewById(R.id.favoriteImage);
+                this.beerImage = itemView.findViewById(R.id.beerImage);
                 this.favoriteImage.setOnClickListener(v -> {
-                    beer.setFavorite(!beer.isFavorite());
+                    /*beer.setFavorite(!beer.isFavorite());*/
                     display(beer);
                     if(favoriteList.contains(beer))
                         favoriteList.remove(beer);
@@ -87,11 +90,13 @@ public class SearchBeerFragment extends Fragment {
             public void display(Beer beer) {
                 this.beer = beer;
                 nameTextView.setText(beer.getName());
-                catNameTextView.setText(beer.getCatName());
-                countryTextView.setText(beer.getCountry());
-                if(beer.isFavorite())
+                catNameTextView.setText(beer.getNameDisplay());
+                countryTextView.setText(beer.getStyle().getShortName());
+                if(beer.getLabels() != null && beer.getLabels().getMedium() != null)
+                    Picasso.get().load(beer.getLabels().getMedium()).into(this.beerImage);
+                /*if(beer.isFavorite())
                     favoriteImage.setImageResource(R.drawable.ic_lover);
-                else
+                else*/
                     favoriteImage.setImageResource(R.drawable.ic_like);
             }
         }
@@ -102,6 +107,7 @@ public class SearchBeerFragment extends Fragment {
     private RecyclerAdapter adapter;
     private ListViewModel viewModel;
     private List<Beer> favoriteList;
+
 
     public SearchBeerFragment() {
         favoriteList = new ArrayList<>();
@@ -122,9 +128,6 @@ public class SearchBeerFragment extends Fragment {
         recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerViewSearch);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         searchBeerTextView = (TextView) getView().findViewById(R.id.searchBeerText);
-        adapter = new RecyclerAdapter(DataGenerator.getInstance().getData());
-        recyclerView.setAdapter(adapter);
-        viewModel = new ViewModelProvider(requireActivity()).get(ListViewModel.class);
 
         searchBeerTextView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -150,9 +153,11 @@ public class SearchBeerFragment extends Fragment {
         mealsCall.enqueue(new Callback<Beers>() {
             @Override
             public void onResponse(@NonNull Call<Beers> call, @NonNull Response<Beers> response) {
-                List<Beers.Beer> b = response.body().getBeers();
-                System.out.println(b.get(1).toString());
-
+                List<Beer> b = response.body().getBeers();
+                System.out.println(b.get(4).toString());
+                adapter = new RecyclerAdapter(b);
+                recyclerView.setAdapter(adapter);
+                viewModel = new ViewModelProvider(requireActivity()).get(ListViewModel.class);
             }
 
             @Override
