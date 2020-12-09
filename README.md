@@ -22,6 +22,7 @@ Une fois votre changement effectué, et votre branche créé, il suffit de crée
     dev <- votre/branche
     
 Après le code review, vous pouvez **Squash and merge** votre *PR*, en résolvant les éventuels *conflicts*. 
+N'oubliez pas de supprimer la branche qui a été merge si vous en avez plus besoin.
   
 ### Les issues
 
