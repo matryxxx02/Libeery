@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 public class DataGenerator {
 
     private static final DataGenerator INSTANCE = new DataGenerator();
-    private List<Beer> beerList;
+    private final List<Beer> beerList;
 
     private DataGenerator() {
         beerList = new ArrayList<Beer>();

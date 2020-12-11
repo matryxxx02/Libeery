@@ -2,11 +2,11 @@ package com.example.libeery.data;
 
 public class Beer {
 
-    private String id;
-    private String name;
-    private String catName;
-    private String country;
-    private String description;
+    private final String id;
+    private final String name;
+    private final String catName;
+    private final String country;
+    private final String description;
     private boolean favorite;
 
     public Beer(String id, String name, String catName, String country, String description) {

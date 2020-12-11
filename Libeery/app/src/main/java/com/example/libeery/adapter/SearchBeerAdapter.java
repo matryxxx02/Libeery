@@ -14,13 +14,12 @@ import com.example.libeery.data.Beer;
 import com.example.libeery.model.ListViewModel;
 import com.example.libeery.room.BeerRoom;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.ViewHolder> {
 
-        private List<Beer> beers = new ArrayList<>();
-        private ListViewModel viewModel;
+        private final List<Beer> beers;
+        private final ListViewModel viewModel;
 
         public SearchBeerAdapter(List<Beer> beers, ListViewModel viewModel) {
             this.beers = beers;
@@ -30,8 +29,7 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.searchbeer_item, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.searchbeer_item, parent, false);
             return new ViewHolder(view);
         }
 

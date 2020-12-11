@@ -6,7 +6,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,12 +19,10 @@ import com.example.libeery.R;
 import com.example.libeery.adapter.SearchBeerAdapter;
 import com.example.libeery.api.BeerApi;
 import com.example.libeery.api.BeerClient;
-import com.example.libeery.data.Beer;
 import com.example.libeery.data.Beers;
 import com.example.libeery.data.DataGenerator;
 import com.example.libeery.model.ListViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -37,6 +34,7 @@ public class SearchBeerFragment extends Fragment {
     private RecyclerView recyclerView;
     private TextView searchBeerTextView;
     private SearchBeerAdapter adapter;
+    private ListViewModel viewModel;
 
     public SearchBeerFragment() {}
 
@@ -55,7 +53,8 @@ public class SearchBeerFragment extends Fragment {
         recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerViewSearch);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         searchBeerTextView = (TextView) getView().findViewById(R.id.searchBeerText);
-        adapter = new SearchBeerAdapter(DataGenerator.getInstance().getData(), new ViewModelProvider(requireActivity()).get(ListViewModel.class));
+        viewModel = new ViewModelProvider(requireActivity()).get(ListViewModel.class);
+        adapter = new SearchBeerAdapter(DataGenerator.getInstance().getData(), viewModel);
         recyclerView.setAdapter(adapter);
 
         searchBeerTextView.addTextChangedListener(new TextWatcher() {
@@ -66,8 +65,8 @@ public class SearchBeerFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //adapter = new SearchBeerAdapter(DataGenerator.getInstance().getData(searchBeerTextView.getText().toString()));
-                //recyclerView.setAdapter(adapter);
+                adapter = new SearchBeerAdapter(DataGenerator.getInstance().getData(searchBeerTextView.getText().toString()), viewModel);
+                recyclerView.setAdapter(adapter);
             }
 
             @Override
