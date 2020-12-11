@@ -10,16 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libeery.R;
-import com.example.libeery.data.Beer;
-import com.example.libeery.view.FavoritesFragment;
+import com.example.libeery.room.BeerRoom;
 
 import java.util.List;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
 
-    private final List<Beer> beers;
+    private final List<BeerRoom> beers;
 
-    public FavoritesAdapter(List<Beer> beers) {
+    public FavoritesAdapter(List<BeerRoom> beers) {
         this.beers = beers;
     }
 
@@ -27,7 +26,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     @Override
     public FavoritesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.beer_item, parent, false);
+                .inflate(R.layout.favoritebeer_item, parent, false);
         return new FavoritesAdapter.ViewHolder(view);
     }
 
@@ -46,21 +45,21 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         public TextView nameTextView;
         public TextView catNameTextView;
         public TextView countryTextView;
-        public ImageView favoriteImage;
+        public TextView descriptionTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.nameTextView = itemView.findViewById(R.id.nameTextView);
             this.catNameTextView = itemView.findViewById(R.id.catNameTextView);
             this.countryTextView = itemView.findViewById(R.id.countryTextView);
-            this.favoriteImage = itemView.findViewById(R.id.favoriteImage);
+            this.descriptionTextView = itemView.findViewById(R.id.descriptionTextView);
         }
 
-        public void display(Beer beer) {
+        public void display(BeerRoom beer) {
             nameTextView.setText(beer.getName());
             catNameTextView.setText(beer.getCatName());
             countryTextView.setText(beer.getCountry());
-            favoriteImage.setImageResource(0);
+            descriptionTextView.setText(beer.getDescription());
         }
     }
 }

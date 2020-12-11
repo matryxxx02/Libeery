@@ -1,17 +1,32 @@
 package com.example.libeery.model;
 
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import android.app.Application;
 
-import com.example.libeery.data.Beer;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+
+import com.example.libeery.room.BeerRoom;
 
 import java.util.List;
 
-public class ListViewModel extends ViewModel {
+public class ListViewModel extends AndroidViewModel {
 
-    public final MutableLiveData<List<Beer>> favoriteList = new MutableLiveData<List<Beer>>();
+    private BeerRepository beerRepository;
 
-    public void updateFavoriteList(List<Beer> list) {
-        favoriteList.setValue(list);
+    public final LiveData<List<BeerRoom>> favoriteList;
+
+    public ListViewModel(@NonNull Application application) {
+        super(application);
+        beerRepository = new BeerRepository(application);
+        favoriteList = beerRepository.getListBeers();
+    }
+
+    public void insert(BeerRoom beerRoom) {
+        beerRepository.insert(beerRoom);
+    }
+
+    public void delete(BeerRoom beerRoom) {
+        beerRepository.delete(beerRoom);
     }
 }
