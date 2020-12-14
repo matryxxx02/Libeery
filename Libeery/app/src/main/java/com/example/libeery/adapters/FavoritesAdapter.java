@@ -3,41 +3,42 @@ package com.example.libeery.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libeery.R;
-import com.example.libeery.model.Beer;
-
-import java.util.List;
+import com.example.libeery.viewModel.ListViewModel;
+import com.example.libeery.model.BeerRoom;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
 
-    private final List<Beer> beers;
+    private final ListViewModel viewModel;
 
-    public FavoritesAdapter(List<Beer> beers) {
-        this.beers = beers;
+    public FavoritesAdapter(ListViewModel viewModel) {
+        this.viewModel = viewModel;
     }
 
     @NonNull
     @Override
     public FavoritesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.beer_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.favoritebeer_item, parent, false);
         return new FavoritesAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull FavoritesAdapter.ViewHolder holder, int position) {
-        holder.display(beers.get(position));
+        holder.display(viewModel.favoriteList.getValue().get(position));
     }
 
     @Override
     public int getItemCount() {
-        return beers.size();
+        return viewModel.favoriteList.getValue().size();
+    }
+
+    public void deleteItem(int position) {
+        viewModel.delete(viewModel.favoriteList.getValue().get(position));
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -45,21 +46,21 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         public TextView nameTextView;
         public TextView catNameTextView;
         public TextView countryTextView;
-        public ImageView favoriteImage;
+        public TextView descriptionTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.nameTextView = itemView.findViewById(R.id.nameTextView);
             this.catNameTextView = itemView.findViewById(R.id.catNameTextView);
             this.countryTextView = itemView.findViewById(R.id.countryTextView);
-            this.favoriteImage = itemView.findViewById(R.id.favoriteImage);
+            this.descriptionTextView = itemView.findViewById(R.id.descriptionTextView);
         }
 
-        public void display(Beer beer) {
+        public void display(BeerRoom beer) {
             nameTextView.setText(beer.getName());
-            catNameTextView.setText(beer.getNameDisplay());
-            countryTextView.setText(beer.getStyle().getShortName());
-            favoriteImage.setImageResource(0);
+            catNameTextView.setText(beer.getCatName());
+            countryTextView.setText(beer.getCountry());
+            descriptionTextView.setText(beer.getDescription());
         }
     }
 }

@@ -9,12 +9,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libeery.R;
 import com.example.libeery.adapters.FavoritesAdapter;
-import com.example.libeery.model.ListViewModel;
+import com.example.libeery.viewModel.ListViewModel;
 
 public class FavoritesFragment extends Fragment {
 
@@ -29,8 +30,7 @@ public class FavoritesFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_favorites, container, false);
     }
 
@@ -38,9 +38,11 @@ public class FavoritesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerViewFavorite);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallBack(adapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
         viewModel = new ViewModelProvider(requireActivity()).get(ListViewModel.class);
         viewModel.favoriteList.observe(getViewLifecycleOwner(), list -> {
-            adapter = new FavoritesAdapter(list);
+            adapter = new FavoritesAdapter(viewModel);
             recyclerView.setAdapter(adapter);
         });
     }
