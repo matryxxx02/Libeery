@@ -1,4 +1,4 @@
-package com.example.libeery.adapter;
+package com.example.libeery.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libeery.R;
-import com.example.libeery.data.Beer;
-import com.example.libeery.view.FavoritesFragment;
+import com.example.libeery.model.Beer;
 
 import java.util.List;
 
@@ -58,8 +57,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
         public void display(Beer beer) {
             nameTextView.setText(beer.getName());
-            catNameTextView.setText(beer.getCatName());
-            countryTextView.setText(beer.getCountry());
+            catNameTextView.setText(beer.getNameDisplay());
+            countryTextView.setText(beer.getStyle().getShortName());
             favoriteImage.setImageResource(0);
         }
     }
