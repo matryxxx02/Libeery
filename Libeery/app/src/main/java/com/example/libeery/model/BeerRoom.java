@@ -1,4 +1,4 @@
-package com.example.libeery.room;
+package com.example.libeery.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;

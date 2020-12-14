@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.libeery.adapter.FavoritesAdapter;
+import com.example.libeery.adapters.FavoritesAdapter;
 
 public class SwipeToDeleteCallBack extends ItemTouchHelper.SimpleCallback {
 

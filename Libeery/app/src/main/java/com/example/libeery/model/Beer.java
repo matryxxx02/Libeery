@@ -73,6 +73,7 @@ public class Beer {
     @SerializedName("type")
     @Expose
     private String type;
+    private boolean isFavorite;
 
     public String getId() {
         return id;
@@ -285,6 +286,14 @@ public class Beer {
                 ", style=" + style +
                 ", type='" + type + '\'' +
                 '}';
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 
     public class Category {

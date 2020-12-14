@@ -16,15 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libeery.R;
-import com.example.libeery.adapter.SearchBeerAdapter;
+import com.example.libeery.adapters.SearchBeerAdapter;
 import com.example.libeery.api.BeerApi;
 import com.example.libeery.api.BeerClient;
-import com.example.libeery.data.Beers;
-import com.example.libeery.model.Beer;
 import com.example.libeery.model.Beers;
-import com.example.libeery.data.DataGenerator;
-import com.example.libeery.model.ListViewModel;
-import com.squareup.picasso.Picasso;
+import com.example.libeery.model.Beer;
+import com.example.libeery.viewModel.ListViewModel;
 
 import java.util.List;
 
@@ -56,9 +53,6 @@ public class SearchBeerFragment extends Fragment {
         recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerViewSearch);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         searchBeerTextView = (TextView) getView().findViewById(R.id.searchBeerText);
-        viewModel = new ViewModelProvider(requireActivity()).get(ListViewModel.class);
-        adapter = new SearchBeerAdapter(DataGenerator.getInstance().getData(), viewModel);
-        recyclerView.setAdapter(adapter);
 
         searchBeerTextView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -68,8 +62,8 @@ public class SearchBeerFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                adapter = new SearchBeerAdapter(DataGenerator.getInstance().getData(searchBeerTextView.getText().toString()), viewModel);
-                recyclerView.setAdapter(adapter);
+                /*adapter = new SearchBeerAdapter(, viewModel);
+                recyclerView.setAdapter(adapter);*/
             }
 
             @Override
@@ -86,9 +80,9 @@ public class SearchBeerFragment extends Fragment {
             public void onResponse(@NonNull Call<Beers> call, @NonNull Response<Beers> response) {
                 List<Beer> b = response.body().getBeers();
                 System.out.println(b.get(4).toString());
-                adapter = new RecyclerAdapter(b);
-                recyclerView.setAdapter(adapter);
                 viewModel = new ViewModelProvider(requireActivity()).get(ListViewModel.class);
+                adapter = new SearchBeerAdapter(b,viewModel);
+                recyclerView.setAdapter(adapter);
             }
 
             @Override

@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libeery.R;
 import com.example.libeery.adapters.FavoritesAdapter;
-import com.example.libeery.model.ListViewModel;
+import com.example.libeery.viewModel.ListViewModel;
 
 public class FavoritesFragment extends Fragment {
 
