@@ -1,4 +1,4 @@
-package com.example.libeery.data;
+package com.example.libeery.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

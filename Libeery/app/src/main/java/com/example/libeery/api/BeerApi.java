@@ -1,7 +1,6 @@
 package com.example.libeery.api;
 
-import com.example.libeery.data.Beer;
-import com.example.libeery.data.Beers;
+import com.example.libeery.model.Beers;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

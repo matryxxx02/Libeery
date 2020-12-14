@@ -3,8 +3,6 @@ package com.example.libeery.model;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.libeery.data.Beer;
-
 import java.util.List;
 
 public class ListViewModel extends ViewModel {

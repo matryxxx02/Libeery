@@ -1,4 +1,4 @@
-package com.example.libeery.adapter;
+package com.example.libeery.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libeery.R;
-import com.example.libeery.data.Beer;
-import com.example.libeery.view.FavoritesFragment;
+import com.example.libeery.model.Beer;
 
 import java.util.List;
 

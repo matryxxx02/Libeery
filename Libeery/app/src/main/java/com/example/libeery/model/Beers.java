@@ -1,5 +1,6 @@
-package com.example.libeery.data;
+package com.example.libeery.model;
 
+import com.example.libeery.model.Beer;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

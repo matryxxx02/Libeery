@@ -1,5 +1,7 @@
 package com.example.libeery.data;
 
+import com.example.libeery.model.Beer;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
