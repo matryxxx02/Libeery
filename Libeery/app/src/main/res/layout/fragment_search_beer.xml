@@ -15,10 +15,10 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="82dp"
-        android:paddingBottom="50dp" />
+        android:layout_marginBottom="10dp"
+        android:paddingBottom="20dp" />
 
     <SearchView
         android:id="@+id/searchBeerText"
@@ -28,7 +28,24 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="135dp"
+        android:layout_height="127dp"
+        android:layout_alignStart="@+id/recyclerViewSearch"
+        android:layout_alignTop="@+id/recyclerViewSearch"
+        android:layout_alignEnd="@+id/recyclerViewSearch"
+        android:layout_alignBottom="@+id/recyclerViewSearch"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="207dp"
+        android:layout_marginEnd="119dp"
+        android:layout_marginBottom="305dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
 
 </RelativeLayout>

@@ -49,21 +49,7 @@ public class BeerRepository {
         });
     }
 
-    public MutableLiveData<Beers> getBeers(){
-        MutableLiveData<Beers> beersData = new MutableLiveData<>();
-        beerApi.getBeers().enqueue(new Callback<Beers>() {
-            @Override
-            public void onResponse(Call<Beers> call, Response<Beers> response) {
-                if (response.isSuccessful()) {
-                    beersData.setValue(response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Beers> call, Throwable t) {
-                beersData.setValue(null);
-            }
-        });
-        return beersData;
+    public Call<Beers> getBeers(){
+        return beerApi.getBeers();
     }
 }

@@ -51,10 +51,10 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
     public void filter(String text) {
         filteredBeers.clear();
         if(text.isEmpty()){
-            filteredBeers.addAll(viewModel.beerList.getValue().getBeers());
+            filteredBeers.addAll(viewModel.getBeerList().getValue().getBeers());
         } else{
             text = text.toLowerCase();
-            for(Beer beer: viewModel.beerList.getValue().getBeers()){
+            for(Beer beer: viewModel.getBeerList().getValue().getBeers()){
                 if(beer.getName().toLowerCase().contains(text))
                     filteredBeers.add(beer);
             }
@@ -79,7 +79,7 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
             this.favoriteImage = itemView.findViewById(R.id.favoriteImage);
             this.beerImage = itemView.findViewById(R.id.beerImage);
             this.favoriteImage.setOnClickListener(v -> {
-                    beer.setFavorite(!beer.isFavorite());
+                beer.setFavorite(!beer.isFavorite());
                 display(beer);
                 BeerRoom beerRoom = new BeerRoom(beer.getId(), beer.getName(), beer.getNameDisplay(), beer.getName(), beer.getDescription());
                 if(beer.isFavorite())

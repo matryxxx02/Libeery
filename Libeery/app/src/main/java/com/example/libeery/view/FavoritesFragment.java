@@ -1,5 +1,6 @@
 package com.example.libeery.view;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,16 +39,23 @@ public class FavoritesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerViewFavorite);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        RecyclerView.LayoutManager layoutManager;
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            layoutManager = new GridLayoutManager(getActivity(),2 );
+        else
+            layoutManager = new LinearLayoutManager(getActivity());
+
+        recyclerView.setLayoutManager(layoutManager);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallBack(adapter));
         itemTouchHelper.attachToRecyclerView(recyclerView);
         viewModel = new ViewModelProvider(requireActivity()).get(ListViewModel.class);
         viewModel.favoriteList.observe(getViewLifecycleOwner(), list -> {
-            if(adapter == null) {
+//            if(adapter == null) {
                 adapter = new FavoritesAdapter(viewModel);
                 recyclerView.setAdapter(adapter);
-            }else
-                adapter.notifyDataSetChanged();
+//            }else
+//                adapter.notifyDataSetChanged();
         });
     }
 }

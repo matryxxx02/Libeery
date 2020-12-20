@@ -16,12 +16,19 @@ import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final static String FRAGMENT_NUMBER_KEY = "Fragment_Number";
     private final static String FRAGMENT_STORED_KEY = "Fragment_Stored";
 
     private ChipNavigationBar navBar;
     private Fragment currentFragment;
     private SparseArray<Fragment> fragmentArray;
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if(currentFragment != null){
+            getSupportFragmentManager().putFragment(outState, FRAGMENT_STORED_KEY, currentFragment);
+        }
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +37,13 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentArray = new SparseArray<>(3);
         navBar = findViewById(R.id.navBar);
-        currentFragment = new SearchBeerFragment();
-        navBar.setItemSelected(R.id.beers, true);
+
+        if(savedInstanceState != null){
+            currentFragment = getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_STORED_KEY);
+        }else{
+            currentFragment = new SearchBeerFragment();
+            navBar.setItemSelected(R.id.beers, true);
+        }
         replaceFragment(currentFragment);
 
         navBar.setOnItemSelectedListener(id -> {
@@ -63,12 +75,6 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(currentFragment);
             else
                 System.out.println("Error in creating fragment");
-            if (savedInstanceState != null) {
-                currentFragment = getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_STORED_KEY);
-                replaceFragment(currentFragment);
-                fragmentArray.append(savedInstanceState.getInt(FRAGMENT_NUMBER_KEY), currentFragment);
-            } else
-                navBar.setItemSelected(0, true);
         });
     }
 
@@ -83,10 +89,4 @@ public class MainActivity extends AppCompatActivity {
         super.onRestoreInstanceState (savedInstanceState);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putInt(FRAGMENT_NUMBER_KEY, navBar.getSelectedItemId());
-        getSupportFragmentManager().putFragment(savedInstanceState, FRAGMENT_STORED_KEY, currentFragment);
-    }
 }

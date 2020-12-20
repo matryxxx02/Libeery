@@ -1,11 +1,13 @@
 package com.example.libeery.view;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -14,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,12 +46,6 @@ public class SearchBeerFragment extends Fragment {
     }
 
     @Override
-    public void onCreate (Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_search_beer, container, false);
@@ -56,24 +53,31 @@ public class SearchBeerFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerViewSearch);
-        beerSearchView = (SearchView) getView().findViewById(R.id.searchBeerText);
+//        super.onViewCreated(view, savedInstanceState);
 
         viewModel = new ViewModelProvider(requireActivity()).get(ListViewModel.class);
-        viewModel.beerList.observe(getViewLifecycleOwner(), list -> {
-            List<Beer> beers = list.getBeers();
-            this.beers.addAll(beers);
-            adapter.notifyDataSetChanged();
-        });
-        if (adapter == null) {
-            adapter = new SearchBeerAdapter(viewModel, beers);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            recyclerView.setAdapter(adapter);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setNestedScrollingEnabled(true);
-        }else{
-            adapter.notifyDataSetChanged();
-        }
+
+        initRecyclerView();
+        observeData();
+        viewModel.getBeers();
+    }
+
+    private void initRecyclerView() {
+        recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerViewSearch);
+        beerSearchView = (SearchView) getView().findViewById(R.id.searchBeerText);
+        RecyclerView.LayoutManager layoutManager;
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            layoutManager = new GridLayoutManager(getActivity(),2 );
+        else
+            layoutManager = new LinearLayoutManager(getActivity());
+
+        adapter = new SearchBeerAdapter(viewModel, beers);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setNestedScrollingEnabled(true);
+
         beerSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -86,6 +90,17 @@ public class SearchBeerFragment extends Fragment {
                 adapter.filter(newText);
                 return true;
             }
+        });
+    }
+
+    private void observeData() {
+        viewModel.getBeerList().observe(getViewLifecycleOwner(), list -> {
+            List<Beer> beers = list.getBeers();
+
+            this.beers.addAll(beers);
+            adapter.notifyDataSetChanged();
+
+            getView().findViewById(R.id.progressBar).setVisibility(View.GONE);
         });
     }
 
