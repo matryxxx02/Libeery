@@ -1,8 +1,10 @@
 package com.example.libeery;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.util.SparseArray;
@@ -13,10 +15,20 @@ import com.example.libeery.view.SearchBeerFragment;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 public class MainActivity extends AppCompatActivity {
+
+    private final static String FRAGMENT_STORED_KEY = "Fragment_Stored";
+
     private ChipNavigationBar navBar;
     private Fragment currentFragment;
-    private FragmentManager fragmentManager;
     private SparseArray<Fragment> fragmentArray;
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if(currentFragment != null){
+            getSupportFragmentManager().putFragment(outState, FRAGMENT_STORED_KEY, currentFragment);
+        }
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,13 +37,14 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentArray = new SparseArray<>(3);
         navBar = findViewById(R.id.navBar);
-        currentFragment=new SearchBeerFragment();
-        navBar.setItemSelected(R.id.beers, true);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, currentFragment)
-                .commit();      
 
+        if(savedInstanceState != null){
+            currentFragment = getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_STORED_KEY);
+        }else{
+            currentFragment = new SearchBeerFragment();
+            navBar.setItemSelected(R.id.beers, true);
+        }
+        replaceFragment(currentFragment);
 
         navBar.setOnItemSelectedListener(id -> {
             switch(id){
@@ -58,15 +71,22 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
 
-            if(currentFragment != null ){
-                fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, currentFragment)
-                        .commit();
-            } else {
+            if(currentFragment != null )
+                replaceFragment(currentFragment);
+            else
                 System.out.println("Error in creating fragment");
-            }
         });
-
     }
+
+    private void replaceFragment(Fragment newFragment) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_container, newFragment);
+        ft.commit();
+    }
+
+    @Override
+    protected void onRestoreInstanceState (Bundle savedInstanceState) {
+        super.onRestoreInstanceState (savedInstanceState);
+    }
+
 }

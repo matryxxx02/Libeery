@@ -3,6 +3,7 @@ package com.example.libeery.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,16 +16,19 @@ import com.example.libeery.viewModel.ListViewModel;
 import com.example.libeery.model.BeerRoom;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.ViewHolder> {
 
     private final List<Beer> beers;
+    private List<Beer> filteredBeers;
     private final ListViewModel viewModel;
 
-    public SearchBeerAdapter(List<Beer> beers, ListViewModel viewModel) {
-        this.beers = beers;
+    public SearchBeerAdapter(ListViewModel viewModel, List<Beer> beers) {
         this.viewModel = viewModel;
+        this.beers = beers;
+        this.filteredBeers = beers;
     }
 
     @NonNull
@@ -44,6 +48,20 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
         return beers.size();
     }
 
+    public void filter(String text) {
+        filteredBeers.clear();
+        if(text.isEmpty()){
+            filteredBeers.addAll(viewModel.getBeerList().getValue().getBeers());
+        } else{
+            text = text.toLowerCase();
+            for(Beer beer: viewModel.getBeerList().getValue().getBeers()){
+                if(beer.getName().toLowerCase().contains(text))
+                    filteredBeers.add(beer);
+            }
+        }
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private Beer beer;
@@ -61,7 +79,7 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
             this.favoriteImage = itemView.findViewById(R.id.favoriteImage);
             this.beerImage = itemView.findViewById(R.id.beerImage);
             this.favoriteImage.setOnClickListener(v -> {
-                    beer.setFavorite(!beer.isFavorite());
+                beer.setFavorite(!beer.isFavorite());
                 display(beer);
                 BeerRoom beerRoom = new BeerRoom(beer.getId(), beer.getName(), beer.getNameDisplay(), beer.getName(), beer.getDescription());
                 if(beer.isFavorite())
@@ -75,7 +93,8 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
             this.beer = beer;
             nameTextView.setText(beer.getName());
             catNameTextView.setText(beer.getNameDisplay());
-            countryTextView.setText(beer.getStyle().getShortName());
+            if(beer.getStyle() != null)
+                countryTextView.setText(beer.getStyle().getShortName());
             if(beer.getLabels() != null && beer.getLabels().getMedium() != null)
                 Picasso.get().load(beer.getLabels().getMedium()).into(this.beerImage);
             if(beer.isFavorite())
