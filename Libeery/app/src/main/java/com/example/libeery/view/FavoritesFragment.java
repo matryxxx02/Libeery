@@ -55,7 +55,7 @@ public class FavoritesFragment extends Fragment {
                 adapter = new FavoritesAdapter(viewModel);
                 recyclerView.setAdapter(adapter);
 //            }else
-//                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
         });
     }
 }

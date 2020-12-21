@@ -50,4 +50,15 @@ public class BeerRoom {
     public String getDescription() {
         return description;
     }
+
+    @Override
+    public String toString() {
+        return "BeerRoom{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", catName='" + catName + '\'' +
+                ", country='" + country + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

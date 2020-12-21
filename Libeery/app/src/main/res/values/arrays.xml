@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="your_array_data">
+        <item>@string/control1</item>
+        <item>@string/control2</item>
+    </string-array>
+</resources>

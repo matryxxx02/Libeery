@@ -2,6 +2,8 @@ package com.example.libeery.view;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -31,6 +33,7 @@ import java.util.List;
 public class SearchBeerFragment extends Fragment {
 
     public static final String TEXT_IN_SEARCHBAR = "TextSearchView";
+    public static final String LIST_TEST = "listTest";
 
     private RecyclerView recyclerView;
     private SearchView beerSearchView;
@@ -53,13 +56,15 @@ public class SearchBeerFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
+        super.onViewCreated(view, savedInstanceState);
 
         viewModel = new ViewModelProvider(requireActivity()).get(ListViewModel.class);
 
         initRecyclerView();
         observeData();
-        viewModel.getBeers();
+        if(savedInstanceState==null){
+            viewModel.getBeers();
+        }
     }
 
     private void initRecyclerView() {
@@ -108,13 +113,23 @@ public class SearchBeerFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (savedInstanceState != null)
+        if (savedInstanceState != null){
             beerSearchView.setQuery(textSearchView, false);
+
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        // Save list state
+
         outState.putString(TEXT_IN_SEARCHBAR, textSearchView);
     }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+    }
+
 }

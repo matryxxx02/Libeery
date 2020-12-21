@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#fff"
     tools:context=".view.SearchBeerFragment">
 
@@ -15,20 +16,38 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:paddingBottom="20dp" />
 
+    <segmented_control.widget.custom.android.com.segmentedcontrol.SegmentedControl
+        android:id="@+id/segmented_control"
+        android:layout_width="wrap_content"
+        android:layout_height="53dp"
+        android:layout_alignStart="@+id/recyclerViewSearch"
+        android:layout_alignTop="@+id/searchBeerText"
+        android:layout_alignEnd="@+id/recyclerViewSearch"
+        android:layout_alignBottom="@+id/recyclerViewSearch"
+        android:layout_marginStart="65dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="66dp"
+        android:layout_marginBottom="614dp"
+        app:columnCount="3"
+        app:distributeEvenly="true"
+        app:radius="12dp"
+        app:segments="@array/your_array_data"
+        app:textVerticalPadding="6dp" />
+
     <SearchView
         android:id="@+id/searchBeerText"
-        android:layout_width="56dp"
-        android:layout_height="52dp"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="30dp" />
 
     <ProgressBar

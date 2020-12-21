@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class BeerClient {
     private static final String BASE_URL = "https://api.brewerydb.com/v2/";
-    //https://api.brewerydb.com/v2/search?key=325db7a335e682c607ad018cc1b32151&q=bud&type=beer
+        //https://api.brewerydb.com/v2/search?key=325db7a335e682c607ad018cc1b32151&q=bud&type=beer
 
 
         private static Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)

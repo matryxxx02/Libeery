@@ -42,6 +42,16 @@ public class ListViewModel extends AndroidViewModel {
             @Override
             public void onResponse(Call<Beers> call, Response<Beers> response) {
                 if (response.isSuccessful()) {
+                    /*if(favoriteList.getValue()!=null) for(BeerRoom br : favoriteList.getValue()) System.out.println(br.toString());
+                    if(favoriteList.getValue()!=null) {
+                        for( Beer b : response.body().getBeers()){
+                            if(favoriteList.getValue().contains(new BeerRoom(b.getId(), b.getName(), b.getNameDisplay(), b.getName(), b.getDescription()))) {
+                                int idx = response.body().getBeers().indexOf(b);
+                                response.body().getBeers().get(idx).setFavorite(true);
+                                System.out.println(response.body().getBeers().get(idx).toString());
+                            }
+                        }
+                    }*/
                     beerList.setValue(response.body());
                 }
             }

@@ -9,4 +9,5 @@ import retrofit2.http.Query;
 public interface BeerApi {
     @GET("beers?key=325db7a335e682c607ad018cc1b32151")
     Call<Beers> getBeers();
+
 }
