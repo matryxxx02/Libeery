@@ -2,4 +2,13 @@
     <string name="app_name">Libeery</string>
     <string name="searchBeerHint">Search a beer...</string>
     <string name="loremipsum_description_favoritebeer">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vel maximus dui. Nulla turpis ex, venenatis vel condimentum eget, egestas quis tortor. Sed turpis augue, tristique sit amet sapien quis, cursus porttitor tellus. Ut luctus urna in velit volutpat, vel lacinia justo ornare. Vestibulum sodales odio ipsum, pulvinar sollicitudin ipsum posuere in. Fusce sollicitudin libero luctus suscipit facilisis. Praesent imperdiet nisl malesuada mi consectetur tempor. Donec porttitor faucibus dui eu egestas. Maecenas posuere ante non orci tincidunt imperdiet. Integer blandit est nisl, quis dictum magna pellentesque ut. Vestibulum dapibus suscipit ipsum. Nulla non mattis neque.</string>
+    <string name="dot_loading">...</string>
+    <string name="description">Description</string>
+    <string name="abv">Alcool by volume</string>
+    <string name="updateDate">Update date</string>
+    <string name="website">Website</string>
+    <string name="websiteURL">url website</string>
+    <string name="status">Info status</string>
+    <string name="beerName">Beer Name</string>
+    <string name="statusVerified">Verified</string>
 </resources>

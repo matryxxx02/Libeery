@@ -1,5 +1,7 @@
 package com.example.libeery.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,10 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libeery.R;
 import com.example.libeery.model.Beer;
+import com.example.libeery.view.DetailsBeerView;
 import com.example.libeery.viewModel.ListViewModel;
 import com.example.libeery.model.BeerRoom;
 import com.squareup.picasso.Picasso;
@@ -87,6 +91,17 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
                 else
                     viewModel.delete(beerRoom);
             });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Context context = v.getContext();
+                    Intent intent = new Intent(context, DetailsBeerView.class);
+                    intent.putExtra("beer", beer);
+                    context.startActivity(intent);
+                }
+            });
+
         }
 
         public void display(Beer beer) {

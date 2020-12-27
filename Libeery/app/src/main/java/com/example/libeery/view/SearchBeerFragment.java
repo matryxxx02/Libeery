@@ -1,5 +1,6 @@
 package com.example.libeery.view;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -38,6 +40,7 @@ public class SearchBeerFragment extends Fragment {
     private ListViewModel viewModel;
     private List<Beer> beers = new ArrayList<>();
     private String textSearchView = "";
+
 
     public SearchBeerFragment() {}
 
