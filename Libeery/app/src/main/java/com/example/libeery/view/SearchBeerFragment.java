@@ -2,14 +2,10 @@ package com.example.libeery.view;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +20,7 @@ import com.example.libeery.R;
 import com.example.libeery.adapters.SearchBeerAdapter;
 import com.example.libeery.model.Beer;
 import com.example.libeery.viewModel.ListViewModel;
+import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +29,13 @@ public class SearchBeerFragment extends Fragment {
 
     public static final String TEXT_IN_SEARCHBAR = "TextSearchView";
 
+    private boolean initDone = false;
+    private String textSearchView = "";
+    private List<Beer> beers = new ArrayList<>();
     private RecyclerView recyclerView;
     private SearchView beerSearchView;
     private SearchBeerAdapter adapter;
     private ListViewModel viewModel;
-    private List<Beer> beers = new ArrayList<>();
-    private String textSearchView = "";
 
     public SearchBeerFragment() {}
 
@@ -53,17 +51,16 @@ public class SearchBeerFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
+        super.onViewCreated(view, savedInstanceState);
 
+        recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerViewSearch);
         viewModel = new ViewModelProvider(requireActivity()).get(ListViewModel.class);
-
         initRecyclerView();
         observeData();
         viewModel.getBeers();
     }
 
     private void initRecyclerView() {
-        recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerViewSearch);
         beerSearchView = (SearchView) getView().findViewById(R.id.searchBeerText);
         RecyclerView.LayoutManager layoutManager;
 
@@ -94,6 +91,8 @@ public class SearchBeerFragment extends Fragment {
     }
 
     private void observeData() {
+        ChipNavigationBar navBar = (ChipNavigationBar) getActivity().findViewById(R.id.navBar);
+        navBar.setVisibility(View.INVISIBLE);
         viewModel.getBeerList().observe(getViewLifecycleOwner(), list -> {
             List<Beer> beers = list.getBeers();
 
@@ -101,6 +100,7 @@ public class SearchBeerFragment extends Fragment {
             adapter.notifyDataSetChanged();
 
             getView().findViewById(R.id.progressBar).setVisibility(View.GONE);
+            navBar.setVisibility(View.VISIBLE);
         });
     }
 

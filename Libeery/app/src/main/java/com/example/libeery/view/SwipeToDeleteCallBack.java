@@ -8,7 +8,7 @@ import com.example.libeery.adapters.FavoritesAdapter;
 
 public class SwipeToDeleteCallBack extends ItemTouchHelper.SimpleCallback {
 
-    private final FavoritesAdapter adapter;
+    private FavoritesAdapter adapter;
 
     public SwipeToDeleteCallBack(FavoritesAdapter adapter) {
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
@@ -22,6 +22,7 @@ public class SwipeToDeleteCallBack extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-        adapter.deleteItem(viewHolder.getAdapterPosition());
+        int position = viewHolder.getAdapterPosition();
+        adapter.deleteItem(position);
     }
 }

@@ -1,16 +1,15 @@
 package com.example.libeery;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.util.SparseArray;
+import android.view.View;
+import android.widget.FrameLayout;
 
 import com.example.libeery.view.FavoritesFragment;
-import com.example.libeery.view.ProfileFragment;
 import com.example.libeery.view.SearchBeerFragment;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
@@ -21,12 +20,12 @@ public class MainActivity extends AppCompatActivity {
     private ChipNavigationBar navBar;
     private Fragment currentFragment;
     private SparseArray<Fragment> fragmentArray;
+    private FrameLayout noInternetFrameLayout;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        if(currentFragment != null){
+        if(currentFragment != null)
             getSupportFragmentManager().putFragment(outState, FRAGMENT_STORED_KEY, currentFragment);
-        }
         super.onSaveInstanceState(outState);
     }
 
@@ -34,54 +33,73 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        fragmentArray = new SparseArray<>(3);
+        fragmentArray = new SparseArray<>(2);
         navBar = findViewById(R.id.navBar);
+        noInternetFrameLayout = (FrameLayout) findViewById(R.id.noInternetFrameLayout);
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null)
             currentFragment = getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_STORED_KEY);
-        }else{
-            currentFragment = new SearchBeerFragment();
-            navBar.setItemSelected(R.id.beers, true);
+        else {
+            currentFragment = new FavoritesFragment();
+            navBar.setItemSelected(R.id.favorites, true);
+            fragmentArray.append(1, currentFragment);
         }
         replaceFragment(currentFragment);
 
         navBar.setOnItemSelectedListener(id -> {
-            switch(id){
+            switch (id) {
                 case R.id.beers:
-                    if(fragmentArray.get(0) == null) {
+                    if (fragmentArray.get(0) == null) {
                         currentFragment = SearchBeerFragment.newInstance();
                         fragmentArray.append(0, currentFragment);
-                    }else
-                        currentFragment = fragmentArray.get(0);
+                    } else
+                            currentFragment = fragmentArray.get(0);
+                    CheckNetwork.checkNetworkInfo(this, type -> { //app crashes sometimes
+                        if(type){
+                            if(currentFragment == null) {
+                                if (fragmentArray.get(0) == null) {
+                                    currentFragment = SearchBeerFragment.newInstance();
+                                    fragmentArray.append(0, currentFragment);
+                                } else
+                                    currentFragment = fragmentArray.get(0);
+                            }
+                            updateNoInternetVisibility(View.INVISIBLE);
+                            replaceFragment(currentFragment);
+                        }else {
+                            if(currentFragment != null){
+                                getSupportFragmentManager().beginTransaction().remove(currentFragment).commit();
+                                currentFragment = null;
+                            }
+                            updateNoInternetVisibility(View.VISIBLE);
+                        }
+                    });
                     break;
                 case R.id.favorites:
-                    if(fragmentArray.get(1) == null) {
+                    updateNoInternetVisibility(View.INVISIBLE);
+                    if (fragmentArray.get(1) == null) {
                         currentFragment = FavoritesFragment.newInstance();
                         fragmentArray.append(1, currentFragment);
-                    }else
+                    } else
                         currentFragment = fragmentArray.get(1);
                     break;
-                case R.id.profile:
-                    if(fragmentArray.get(2) == null) {
-                        currentFragment = ProfileFragment.newInstance();
-                        fragmentArray.append(2, currentFragment);
-                    }else
-                        currentFragment = fragmentArray.get(2);
+                default:
                     break;
             }
-
-            if(currentFragment != null )
-                replaceFragment(currentFragment);
-            else
-                System.out.println("Error in creating fragment");
+            replaceFragment(currentFragment);
         });
+
+    }
+
+    private void updateNoInternetVisibility(final int visibility){
+        runOnUiThread(() -> noInternetFrameLayout.setVisibility(visibility));
     }
 
     private void replaceFragment(Fragment newFragment) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_container, newFragment);
-        ft.commit();
+        if(newFragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragmentContainer, newFragment);
+            ft.commit();
+        }
     }
 
     @Override

@@ -47,15 +47,12 @@ public class FavoritesFragment extends Fragment {
             layoutManager = new LinearLayoutManager(getActivity());
 
         recyclerView.setLayoutManager(layoutManager);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallBack(adapter));
-        itemTouchHelper.attachToRecyclerView(recyclerView);
         viewModel = new ViewModelProvider(requireActivity()).get(ListViewModel.class);
         viewModel.favoriteList.observe(getViewLifecycleOwner(), list -> {
-//            if(adapter == null) {
-                adapter = new FavoritesAdapter(viewModel);
-                recyclerView.setAdapter(adapter);
-//            }else
-//                adapter.notifyDataSetChanged();
+            adapter = new FavoritesAdapter(viewModel, getActivity());
+            recyclerView.setAdapter(adapter);
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallBack(adapter));
+            itemTouchHelper.attachToRecyclerView(recyclerView);
         });
     }
 }

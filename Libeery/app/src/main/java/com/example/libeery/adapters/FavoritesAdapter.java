@@ -1,5 +1,7 @@
 package com.example.libeery.adapters;
 
+import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.libeery.R;
 import com.example.libeery.viewModel.ListViewModel;
 import com.example.libeery.model.BeerRoom;
+import com.google.android.material.snackbar.Snackbar;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
 
     private final ListViewModel viewModel;
+    private Activity context;
 
-    public FavoritesAdapter(ListViewModel viewModel) {
+    public FavoritesAdapter(ListViewModel viewModel, Activity context) {
         this.viewModel = viewModel;
+        this.context = context;
     }
 
     @NonNull
@@ -37,9 +42,30 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         return viewModel.favoriteList.getValue().size();
     }
 
+    BeerRoom mRecentlyDeletedItem;
+    int mRecentlyDeletedItemPosition;
+
     public void deleteItem(int position) {
+        mRecentlyDeletedItem = viewModel.favoriteList.getValue().get(position);
+        mRecentlyDeletedItemPosition = position;
         viewModel.delete(viewModel.favoriteList.getValue().get(position));
+        notifyItemRemoved(position);
+        showUndoSnackbar();
     }
+
+    private void showUndoSnackbar() {
+        View view = context.findViewById(R.id.coordinator_layout);
+        Snackbar snackbar = Snackbar.make(view, R.string.snack_bar_text, Snackbar.LENGTH_LONG);
+//        snackbar.setAction(R.string.snack_bar_undo, v -> undoDelete());
+        snackbar.show();
+    }
+
+    //Issue: When undo a deletion, deleted beer does not appear immediately in recycler view. Need to switch fragment and go back to see
+    //the beer again. Moreover, if trying to delete this beer once again, the beer will not be deleted and can even be duplicated.
+    /*private void undoDelete() {
+        viewModel.favoriteList.getValue().add(mRecentlyDeletedItemPosition, mRecentlyDeletedItem);
+        notifyItemInserted(mRecentlyDeletedItemPosition);
+    }*/
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 

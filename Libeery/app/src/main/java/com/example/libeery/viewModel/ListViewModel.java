@@ -28,8 +28,6 @@ public class ListViewModel extends AndroidViewModel {
         super(application);
         beerRepository = new BeerRepository(application);
         favoriteList = beerRepository.getListBeersRoom();
-        /*if (beerList == null)
-            beerList = beerRepository.getBeers();*/
     }
 
     public MutableLiveData<Beers> getBeerList() {
@@ -41,9 +39,8 @@ public class ListViewModel extends AndroidViewModel {
         beerRepository.getBeers().enqueue(new Callback<Beers>() {
             @Override
             public void onResponse(Call<Beers> call, Response<Beers> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful())
                     beerList.setValue(response.body());
-                }
             }
 
             @Override
