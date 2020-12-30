@@ -26,6 +26,8 @@ public class BeerRepository {
     private LiveData<List<BeerRoom>> listBeersRoom;
     private BeerApi beerApi;
 
+
+
     public BeerRepository(Application application) {
         BeerRoomDatabase db = BeerRoomDatabase.getDatabase(application);
         beerDao = db.beerDAO();

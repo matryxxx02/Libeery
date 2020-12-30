@@ -6,8 +6,8 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="colorBackground">#F4F7F7</color>
     <color name="colorBlack">#020303</color>
-    <color name="translucent_scrim_top">#26000000</color>
-    <color name="translucent_scrim_top_center">#0C000000</color>
+    <color name="translucent_scrim_top">#7F000000</color>
+    <color name="translucent_scrim_top_center">#2F000000</color>
     <color name="translucent_scrim_bottom">#2A000000</color>
     <color name="translucent_scrim_bottom_center">#51D0CECE</color>
 </resources>

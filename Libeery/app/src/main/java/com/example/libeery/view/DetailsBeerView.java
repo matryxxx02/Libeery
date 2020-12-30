@@ -12,11 +12,13 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.libeery.R;
 import com.example.libeery.model.Beer;
+import com.example.libeery.model.BeerRoom;
+import com.example.libeery.viewModel.BeersViewModel;
+import com.example.libeery.viewModel.BeersViewModelFactory;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.squareup.picasso.Picasso;
@@ -24,10 +26,10 @@ import com.squareup.picasso.Target;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
-import androidx.palette.graphics.Palette;
+import androidx.lifecycle.ViewModelProvider;
 
-import java.util.Calendar;
-import java.util.Date;
+import static com.example.libeery.R.drawable.ic_like_detail;
+import static com.example.libeery.R.drawable.ic_lover_detail;
 
 public class DetailsBeerView extends AppCompatActivity {
     private Beer beer;
@@ -42,11 +44,15 @@ public class DetailsBeerView extends AppCompatActivity {
     private TextView infoStatus;
     private TextView miniDescript;
     private ProgressBar progressBarDetail;
+    private BeersViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.beer_details);
+
+        BeersViewModelFactory factory = BeersViewModelFactory.getInstance();
+        viewModel = new ViewModelProvider(this, factory).get(BeersViewModel.class);
 
         initView();
         Intent i = getIntent();
@@ -56,24 +62,31 @@ public class DetailsBeerView extends AppCompatActivity {
         if(i != null){
             beer = i.getParcelableExtra("beer");
             System.out.println(beer.toString());
-
-            if(beer.getLabels() != null && beer.getLabels().getMedium() != null){
-                Picasso.get().load(beer.getLabels().getLarge()).into(LoadImage());
-            }
-            //TODO: gerer le else (si il y a pas d'image mettre une image de beer)
-
-            beerName.setText(beer.getNameDisplay());
-            description.setText(beer.getStyle().getDescription());
-            if(beer.getAbv()!=null) abv.setText(beer.getAbv()+" %");
-            String date = "/";
-            if(beer.getStyle().getUpdateDate() != null) date = beer.getStyle().getUpdateDate().split(" ")[0].replace("-","/");
-            updateDate.setText(date);
-            infoStatus.setText((beer.getStatus()=="verified")?"Verified":"Not verified");
-            if(beer.getDescription() != null) miniDescript.setText(beer.getDescription().length()>0 ? beer.getDescription() : "/");
-            else miniDescript.setText(beer.getName());
-
+            setBeerFields();
         }
 
+    }
+
+    private void setBeerFields() {
+        if(beer.getLabels() != null && beer.getLabels().getMedium() != null){
+            Picasso.get().load(beer.getLabels().getLarge()).into(LoadImage());
+        }
+        //TODO: gerer le else (si il y a pas d'image mettre une image de beer)
+
+        beerName.setText(beer.getNameDisplay());
+        if(beer.getStyle().getDescription() != null) description.setText(beer.getStyle().getDescription());
+
+        if(beer.getAbv()!=null) abv.setText(beer.getAbv()+" %");
+
+        String date = "/";
+        if(beer.getStyle().getUpdateDate() != null) date = beer.getStyle().getUpdateDate().split(" ")[0].replace("-","/");
+        updateDate.setText(date);
+
+        if(beer.getStatus()=="verified") infoStatus.setText("Verified");
+        else infoStatus.setText("Not verified");
+
+        if(beer.getDescription() != null) miniDescript.setText(beer.getDescription().length()>0 ? beer.getDescription() : "/");
+        else miniDescript.setText(beer.getName());
     }
 
     private void showTitleOnlyOnCollapsed() {
@@ -113,7 +126,6 @@ public class DetailsBeerView extends AppCompatActivity {
 
             @Override
             public void onPrepareLoad(Drawable arg0) {
-
                 progressBarDetail.setVisibility(View.VISIBLE);
             }
         };
@@ -123,10 +135,8 @@ public class DetailsBeerView extends AppCompatActivity {
         setSupportActionBar(toolbar);
         titleToolbar.setContentScrimColor(getResources().getColor(R.color.colorPrimary));
         titleToolbar.setCollapsedTitleTextColor(getResources().getColor(R.color.colorBackground));
-//        titleToolbar.setExpandedTitleColor(getResources().getColor(R.color.colorBlack));
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowCustomEnabled(true);
         }
     }
 
@@ -135,14 +145,10 @@ public class DetailsBeerView extends AppCompatActivity {
             if ((titleToolbar.getHeight() + verticalOffset) < (2 * ViewCompat.getMinimumHeight(titleToolbar))) {
                 if (toolbar.getNavigationIcon() != null)
                     toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorBackground), PorterDuff.Mode.SRC_ATOP);
-                favoriteItemColor.mutate().setColorFilter(getResources().getColor(R.color.colorBackground),
-                        PorterDuff.Mode.SRC_ATOP);
 
             } else {
                 if (toolbar.getNavigationIcon() != null)
                     toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorBackground), PorterDuff.Mode.SRC_ATOP);
-                favoriteItemColor.mutate().setColorFilter(getResources().getColor(R.color.colorBackground),
-                        PorterDuff.Mode.SRC_ATOP);
             }
         });
     }
@@ -151,6 +157,7 @@ public class DetailsBeerView extends AppCompatActivity {
         beerImage = findViewById(R.id.detailBeerImage);
         titleToolbar = findViewById(R.id.collapsing_toolbar);
         toolbar = findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.menu_detail);
         appBarLayout = findViewById(R.id.appbar);
         description = findViewById(R.id.description);
         beerName = findViewById(R.id.beerName);
@@ -163,14 +170,36 @@ public class DetailsBeerView extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Drawable favoriteItemColor = getDrawable(R.drawable.ic_like);
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        Drawable favoriteItemColor = getDrawable(R.drawable.ic_like_detail);
         setupColorActionBarIcon(favoriteItemColor);
         return true;
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        final MenuItem favoriteItem = menu.findItem(R.id.favoriteDetail);
+        if(beer != null && beer.isFavorite())
+            favoriteItem.setIcon(getDrawable(R.drawable.ic_lover_detail));
+        else
+            favoriteItem.setIcon(getDrawable(R.drawable.ic_like_detail));
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.favoriteDetail :
+                if(beer != null && beer.isFavorite()){
+                    item.setIcon(ic_like_detail);
+                    beer.setFavorite(false);
+                    viewModel.delete(new BeerRoom(beer.getId(), beer.getName(), beer.getNameDisplay(), beer.getName(), beer.getDescription()));
+                } else {
+                    item.setIcon(ic_lover_detail);
+                    beer.setFavorite(true);
+                    viewModel.insert(new BeerRoom(beer.getId(), beer.getName(), beer.getNameDisplay(), beer.getName(), beer.getDescription()));
+                }
+                return true;
             case android.R.id.home :
                 onBackPressed();
                 return true;

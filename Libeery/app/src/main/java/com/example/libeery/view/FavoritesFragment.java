@@ -17,12 +17,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libeery.R;
 import com.example.libeery.adapters.FavoritesAdapter;
-import com.example.libeery.viewModel.ListViewModel;
+import com.example.libeery.viewModel.BeersViewModel;
+import com.example.libeery.viewModel.BeersViewModelFactory;
 
 public class FavoritesFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private ListViewModel viewModel;
+    private BeersViewModel viewModel;
     private FavoritesAdapter adapter;
 
     public FavoritesFragment() {}
@@ -49,13 +50,12 @@ public class FavoritesFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallBack(adapter));
         itemTouchHelper.attachToRecyclerView(recyclerView);
-        viewModel = new ViewModelProvider(requireActivity()).get(ListViewModel.class);
+        BeersViewModelFactory factory = BeersViewModelFactory.getInstance();
+        viewModel = new ViewModelProvider(requireActivity(), factory).get(BeersViewModel.class);
         viewModel.favoriteList.observe(getViewLifecycleOwner(), list -> {
 //            if(adapter == null) {
                 adapter = new FavoritesAdapter(viewModel);
                 recyclerView.setAdapter(adapter);
-//            }else
-//                adapter.notifyDataSetChanged();
         });
     }
 }

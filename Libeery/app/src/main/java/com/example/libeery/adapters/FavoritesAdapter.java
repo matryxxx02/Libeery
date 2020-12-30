@@ -9,14 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libeery.R;
-import com.example.libeery.viewModel.ListViewModel;
+import com.example.libeery.viewModel.BeersViewModel;
 import com.example.libeery.model.BeerRoom;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
 
-    private final ListViewModel viewModel;
+    private final BeersViewModel viewModel;
 
-    public FavoritesAdapter(ListViewModel viewModel) {
+    public FavoritesAdapter(BeersViewModel viewModel) {
         this.viewModel = viewModel;
     }
 

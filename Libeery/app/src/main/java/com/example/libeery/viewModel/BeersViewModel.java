@@ -3,9 +3,10 @@ package com.example.libeery.viewModel;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
+    import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.example.libeery.model.Beer;
 import com.example.libeery.model.BeerRoom;
@@ -18,18 +19,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ListViewModel extends AndroidViewModel {
+public class BeersViewModel extends ViewModel {
 
     private BeerRepository beerRepository;
     private MutableLiveData<Beers> beerList = new MutableLiveData<>();
     public final LiveData<List<BeerRoom>> favoriteList;
 
-    public ListViewModel(@NonNull Application application) {
-        super(application);
-        beerRepository = new BeerRepository(application);
+    public BeersViewModel(BeerRepository br) {
+        beerRepository = br;
         favoriteList = beerRepository.getListBeersRoom();
-        /*if (beerList == null)
-            beerList = beerRepository.getBeers();*/
     }
 
     public MutableLiveData<Beers> getBeerList() {

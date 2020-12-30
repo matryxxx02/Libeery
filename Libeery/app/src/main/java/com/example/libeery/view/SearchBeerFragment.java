@@ -1,20 +1,14 @@
 package com.example.libeery.view;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -25,7 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.libeery.R;
 import com.example.libeery.adapters.SearchBeerAdapter;
 import com.example.libeery.model.Beer;
-import com.example.libeery.viewModel.ListViewModel;
+import com.example.libeery.viewModel.BeersViewModel;
+import com.example.libeery.viewModel.BeersViewModelFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +32,7 @@ public class SearchBeerFragment extends Fragment {
     private RecyclerView recyclerView;
     private SearchView beerSearchView;
     private SearchBeerAdapter adapter;
-    private ListViewModel viewModel;
+    private BeersViewModel viewModel;
     private List<Beer> beers = new ArrayList<>();
     private String textSearchView = "";
 
@@ -56,9 +51,11 @@ public class SearchBeerFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
+        super.onViewCreated(view, savedInstanceState);
 
-        viewModel = new ViewModelProvider(requireActivity()).get(ListViewModel.class);
+        BeersViewModelFactory factory = BeersViewModelFactory.getInstance();
+        factory.initFactory(getActivity().getApplication());
+        viewModel = new ViewModelProvider(requireActivity(), factory).get(BeersViewModel.class);
 
         initRecyclerView();
         observeData();

@@ -5,31 +5,28 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libeery.R;
 import com.example.libeery.model.Beer;
 import com.example.libeery.view.DetailsBeerView;
-import com.example.libeery.viewModel.ListViewModel;
+import com.example.libeery.viewModel.BeersViewModel;
 import com.example.libeery.model.BeerRoom;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.ViewHolder> {
 
     private final List<Beer> beers;
     private List<Beer> filteredBeers;
-    private final ListViewModel viewModel;
+    private final BeersViewModel viewModel;
 
-    public SearchBeerAdapter(ListViewModel viewModel, List<Beer> beers) {
+    public SearchBeerAdapter(BeersViewModel viewModel, List<Beer> beers) {
         this.viewModel = viewModel;
         this.beers = beers;
         this.filteredBeers = beers;
