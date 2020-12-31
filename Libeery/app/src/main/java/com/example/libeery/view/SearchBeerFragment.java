@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.libeery.R;
 import com.example.libeery.adapters.SearchBeerAdapter;
 import com.example.libeery.model.Beer;
+import com.example.libeery.model.BeerRoom;
 import com.example.libeery.viewModel.BeersViewModel;
 import com.example.libeery.viewModel.BeersViewModelFactory;
 
@@ -33,7 +34,7 @@ public class SearchBeerFragment extends Fragment {
     private SearchView beerSearchView;
     private SearchBeerAdapter adapter;
     private BeersViewModel viewModel;
-    private List<Beer> beers = new ArrayList<>();
+    private List<BeerRoom> beers = new ArrayList<>();
     private String textSearchView = "";
 
 
@@ -59,7 +60,6 @@ public class SearchBeerFragment extends Fragment {
 
         initRecyclerView();
         observeData();
-        viewModel.getBeers();
     }
 
     private void initRecyclerView() {
@@ -95,12 +95,14 @@ public class SearchBeerFragment extends Fragment {
 
     private void observeData() {
         viewModel.getBeerList().observe(getViewLifecycleOwner(), list -> {
-            List<Beer> beers = list.getBeers();
+            System.out.println("LLIIISSSTT BEER: "+list);
+            List<BeerRoom> beers = list;
 
             this.beers.addAll(beers);
             adapter.notifyDataSetChanged();
-
-            getView().findViewById(R.id.progressBar).setVisibility(View.GONE);
+            if(list.size()!=0){
+                getView().findViewById(R.id.progressBar).setVisibility(View.GONE);
+            }
         });
     }
 

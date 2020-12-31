@@ -15,40 +15,24 @@ import com.example.libeery.repository.BeerRepository;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class BeersViewModel extends ViewModel {
 
     private BeerRepository beerRepository;
-    private MutableLiveData<Beers> beerList = new MutableLiveData<>();
+    private LiveData<List<BeerRoom>> beerList;
     public final LiveData<List<BeerRoom>> favoriteList;
 
     public BeersViewModel(BeerRepository br) {
         beerRepository = br;
-        favoriteList = beerRepository.getListBeersRoom();
+        beerList = beerRepository.getListBeersRoom();
+        favoriteList = beerRepository.getFavoriteBeersRoom();
     }
 
-    public MutableLiveData<Beers> getBeerList() {
+    public LiveData<List<BeerRoom>> getBeerList() {
         return beerList;
     }
 
-    public void getBeers() {
-
-        beerRepository.getBeers().enqueue(new Callback<Beers>() {
-            @Override
-            public void onResponse(Call<Beers> call, Response<Beers> response) {
-                if (response.isSuccessful()) {
-                    beerList.setValue(response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Beers> call, Throwable t) {
-                beerList.setValue(null);
-            }
-        });
+    public LiveData<List<BeerRoom>> getFavoriteList() {
+        return favoriteList;
     }
 
     public void insert(BeerRoom beerRoom) {

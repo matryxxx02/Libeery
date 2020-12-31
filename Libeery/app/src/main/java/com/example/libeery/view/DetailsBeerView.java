@@ -190,7 +190,7 @@ public class DetailsBeerView extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.favoriteDetail :
-                if(beer != null && beer.isFavorite()){
+               /* if(beer != null && beer.isFavorite()){
                     item.setIcon(ic_like_detail);
                     beer.setFavorite(false);
                     viewModel.delete(new BeerRoom(beer.getId(), beer.getName(), beer.getNameDisplay(), beer.getName(), beer.getDescription()));
@@ -198,7 +198,7 @@ public class DetailsBeerView extends AppCompatActivity {
                     item.setIcon(ic_lover_detail);
                     beer.setFavorite(true);
                     viewModel.insert(new BeerRoom(beer.getId(), beer.getName(), beer.getNameDisplay(), beer.getName(), beer.getDescription()));
-                }
+                }*/
                 return true;
             case android.R.id.home :
                 onBackPressed();

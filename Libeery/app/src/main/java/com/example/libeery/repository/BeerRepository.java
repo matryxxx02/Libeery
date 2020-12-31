@@ -2,7 +2,6 @@ package com.example.libeery.repository;
 
 import android.app.Application;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -14,7 +13,9 @@ import com.example.libeery.db.BeerDAO;
 import com.example.libeery.db.BeerRoomDatabase;
 import com.example.libeery.model.Beers;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,35 +24,72 @@ import retrofit2.Response;
 public class BeerRepository {
 
     private BeerDAO beerDao;
-    private LiveData<List<BeerRoom>> listBeersRoom;
     private BeerApi beerApi;
-
-
+    private LiveData<List<BeerRoom>> listBeersRoom;
+    private LiveData<List<BeerRoom>> favoriteBeersRoom;
+    private MutableLiveData<Beers> beerListResponse = new MutableLiveData<>();
+    private long FRESH_TIMEOUT = TimeUnit.DAYS.toMillis(1);
 
     public BeerRepository(Application application) {
         BeerRoomDatabase db = BeerRoomDatabase.getDatabase(application);
         beerDao = db.beerDAO();
-        listBeersRoom = beerDao.getAlphabetizedBeers();
         beerApi = BeerClient.createService(BeerApi.class);
+        favoriteBeersRoom = beerDao.getFavoriteBeers();
+
+        listBeersRoom = beerDao.getAlphabetizedBeers();
+        System.out.println("listBeersRoom: "+listBeersRoom);
+        System.out.println("dsds: "+ favoriteBeersRoom);
     }
 
     public LiveData<List<BeerRoom>> getListBeersRoom() {
+        getBeers();
+        System.out.println("getting list: "+listBeersRoom);
         return listBeersRoom;
     }
 
-    public void insert(BeerRoom word) {
+    public LiveData<List<BeerRoom>> getFavoriteBeersRoom() {
+        if(favoriteBeersRoom.getValue()!=null)
+            System.out.println("Favorites: "+ favoriteBeersRoom.getValue().toString());
+        return favoriteBeersRoom;
+    }
+
+    public void insert(BeerRoom beer) {
+//        beer.setFavorite(true);
         BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
-            beerDao.insert(word);
+            beerDao.update(beer);
         });
     }
 
     public void delete(BeerRoom beer) {
+//        beer.setFavorite(false);
         BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
-            beerDao.delete(beer);
+            beerDao.update(beer);
         });
     }
 
-    public Call<Beers> getBeers(){
-        return beerApi.getBeers();
+    public void getBeers(){
+        beerApi.getBeers().enqueue(new Callback<Beers>() {
+            @Override
+            public void onResponse(Call<Beers> call, Response<Beers> response) {
+                if (response.isSuccessful()) {
+                    beerListResponse.setValue(response.body());
+                    BeerAPItoBeerRoom(beerListResponse.getValue());
+                    listBeersRoom = beerDao.getAlphabetizedBeers();
+                    System.out.println("listBeersRoom after getBeer: "+listBeersRoom);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Beers> call, Throwable t) { beerListResponse.setValue(null); }
+        });
+    }
+
+    public void BeerAPItoBeerRoom(Beers beers) {
+        List<BeerRoom> dbBeers = new ArrayList<>();
+        for(Beer beer : beers.getBeers())
+            dbBeers.add(new BeerRoom(beer));
+        BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
+            beerDao.insertAll(dbBeers);
+        });
     }
 }

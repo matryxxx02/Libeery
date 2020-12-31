@@ -62,13 +62,6 @@ public class MainActivity extends AppCompatActivity {
                     }else
                         currentFragment = fragmentArray.get(1);
                     break;
-                case R.id.profile:
-                    if(fragmentArray.get(2) == null) {
-                        currentFragment = ProfileFragment.newInstance();
-                        fragmentArray.append(2, currentFragment);
-                    }else
-                        currentFragment = fragmentArray.get(2);
-                    break;
             }
 
             if(currentFragment != null )

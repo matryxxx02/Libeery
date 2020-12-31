@@ -52,8 +52,9 @@ public class FavoritesFragment extends Fragment {
         itemTouchHelper.attachToRecyclerView(recyclerView);
         BeersViewModelFactory factory = BeersViewModelFactory.getInstance();
         viewModel = new ViewModelProvider(requireActivity(), factory).get(BeersViewModel.class);
-        viewModel.favoriteList.observe(getViewLifecycleOwner(), list -> {
+        viewModel.getFavoriteList().observe(getViewLifecycleOwner(), list -> {
 //            if(adapter == null) {
+                System.out.println("Favorites"+list);
                 adapter = new FavoritesAdapter(viewModel);
                 recyclerView.setAdapter(adapter);
         });

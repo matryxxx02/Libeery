@@ -22,11 +22,11 @@ import java.util.List;
 
 public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.ViewHolder> {
 
-    private final List<Beer> beers;
-    private List<Beer> filteredBeers;
+    private final List<BeerRoom> beers;
+    private List<BeerRoom> filteredBeers;
     private final BeersViewModel viewModel;
 
-    public SearchBeerAdapter(BeersViewModel viewModel, List<Beer> beers) {
+    public SearchBeerAdapter(BeersViewModel viewModel, List<BeerRoom> beers) {
         this.viewModel = viewModel;
         this.beers = beers;
         this.filteredBeers = beers;
@@ -50,7 +50,7 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
     }
 
     public void filter(String text) {
-        filteredBeers.clear();
+        /*filteredBeers.clear();
         if(text.isEmpty()){
             filteredBeers.addAll(viewModel.getBeerList().getValue().getBeers());
         } else{
@@ -60,12 +60,12 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
                     filteredBeers.add(beer);
             }
         }
-        notifyDataSetChanged();
+        notifyDataSetChanged();*/
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private Beer beer;
+        private BeerRoom beer;
         public TextView nameTextView;
         public TextView catNameTextView;
         public TextView countryTextView;
@@ -80,16 +80,15 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
             this.favoriteImage = itemView.findViewById(R.id.favoriteImage);
             this.beerImage = itemView.findViewById(R.id.beerImage);
             this.favoriteImage.setOnClickListener(v -> {
-                beer.setFavorite(!beer.isFavorite());
+                beer.setFavorite(beer.getFavorite()!=1?1:0);
                 display(beer);
-                BeerRoom beerRoom = new BeerRoom(beer.getId(), beer.getName(), beer.getNameDisplay(), beer.getName(), beer.getDescription());
-                if(beer.isFavorite())
-                    viewModel.insert(beerRoom);
+                if(beer.getFavorite()==1)
+                    viewModel.insert(beer);
                 else
-                    viewModel.delete(beerRoom);
+                    viewModel.delete(beer);
             });
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+           /* itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Context context = v.getContext();
@@ -97,19 +96,21 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
                     intent.putExtra("beer", beer);
                     context.startActivity(intent);
                 }
-            });
+            });*/
 
         }
 
-        public void display(Beer beer) {
+        public void display(BeerRoom beer) {
             this.beer = beer;
             nameTextView.setText(beer.getName());
-            catNameTextView.setText(beer.getNameDisplay());
-            if(beer.getStyle() != null)
-                countryTextView.setText(beer.getStyle().getShortName());
-            if(beer.getLabels() != null && beer.getLabels().getMedium() != null)
-                Picasso.get().load(beer.getLabels().getMedium()).into(this.beerImage);
-            if(beer.isFavorite())
+            catNameTextView.setText(beer.getCatName());
+            /*if(beer.getStyle() != null)
+                countryTextView.setText(beer.getStyle().getShortName());*/
+            if(beer.getImageURL() != null && !beer.getImageURL().isEmpty()){
+                System.out.println(beer.getImageURL());
+                Picasso.get().load(beer.getImageURL()).into(this.beerImage);
+            }
+            if(beer.getFavorite()==1)
                 favoriteImage.setImageResource(R.drawable.ic_lover);
             else
                 favoriteImage.setImageResource(R.drawable.ic_like);

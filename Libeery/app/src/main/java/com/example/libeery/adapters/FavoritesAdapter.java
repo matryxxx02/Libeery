@@ -29,12 +29,13 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull FavoritesAdapter.ViewHolder holder, int position) {
-        holder.display(viewModel.favoriteList.getValue().get(position));
+        holder.display(viewModel.getFavoriteList().getValue().get(position));
     }
 
     @Override
     public int getItemCount() {
-        return viewModel.favoriteList.getValue().size();
+        System.out.println(viewModel.getFavoriteList());
+        return viewModel.getFavoriteList().getValue().size();
     }
 
     public void deleteItem(int position) {
@@ -59,7 +60,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         public void display(BeerRoom beer) {
             nameTextView.setText(beer.getName());
             catNameTextView.setText(beer.getCatName());
-            countryTextView.setText(beer.getCountry());
+            countryTextView.setText(beer.getAbv());
             descriptionTextView.setText(beer.getDescription());
         }
     }
