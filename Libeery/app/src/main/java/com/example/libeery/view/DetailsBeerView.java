@@ -74,12 +74,12 @@ public class DetailsBeerView extends AppCompatActivity {
         //TODO: gerer le else (si il y a pas d'image mettre une image de beer)
 
         beerName.setText(beer.getNameDisplay());
-        if(beer.getStyle().getDescription() != null) description.setText(beer.getStyle().getDescription());
+        if(beer.getStyle() != null && beer.getStyle().getDescription() != null) description.setText(beer.getStyle().getDescription());
 
         if(beer.getAbv()!=null) abv.setText(beer.getAbv()+" %");
 
         String date = "/";
-        if(beer.getStyle().getUpdateDate() != null) date = beer.getStyle().getUpdateDate().split(" ")[0].replace("-","/");
+        if(beer.getStyle() != null && beer.getStyle().getUpdateDate() != null) date = beer.getStyle().getUpdateDate().split(" ")[0].replace("-","/");
         updateDate.setText(date);
 
         if(beer.getStatus()=="verified") infoStatus.setText("Verified");

@@ -8,6 +8,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.example.libeery.model.BeerRoom;
+import com.example.libeery.model.Beers;
 
 import java.util.List;
 
