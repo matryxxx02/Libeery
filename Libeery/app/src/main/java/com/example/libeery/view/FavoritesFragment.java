@@ -17,14 +17,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libeery.R;
 import com.example.libeery.adapters.FavoritesAdapter;
+import com.example.libeery.model.BeerRoom;
 import com.example.libeery.viewModel.BeersViewModel;
 import com.example.libeery.viewModel.BeersViewModelFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FavoritesFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private BeersViewModel viewModel;
     private FavoritesAdapter adapter;
+    private List<BeerRoom> favoriteList =  new ArrayList<>();
 
     public FavoritesFragment() {}
 
@@ -39,7 +44,11 @@ public class FavoritesFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerViewFavorite);
+        super.onViewCreated(view, savedInstanceState);
+        BeersViewModelFactory factory = BeersViewModelFactory.getInstance();
+        viewModel = new ViewModelProvider(requireActivity(), factory).get(BeersViewModel.class);
+
+        recyclerView = getView().findViewById(R.id.recyclerViewFavorite);
         RecyclerView.LayoutManager layoutManager;
 
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
@@ -47,14 +56,15 @@ public class FavoritesFragment extends Fragment {
         else
             layoutManager = new LinearLayoutManager(getActivity());
 
+        adapter = new FavoritesAdapter(viewModel, favoriteList);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallBack(adapter));
         itemTouchHelper.attachToRecyclerView(recyclerView);
-        BeersViewModelFactory factory = BeersViewModelFactory.getInstance();
-        viewModel = new ViewModelProvider(requireActivity(), factory).get(BeersViewModel.class);
         viewModel.getFavoriteList().observe(getViewLifecycleOwner(), list -> {
-                adapter = new FavoritesAdapter(viewModel);
-                recyclerView.setAdapter(adapter);
+            favoriteList = list;
+            adapter.updateFavorite(favoriteList);
         });
     }
 }

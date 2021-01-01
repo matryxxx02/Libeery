@@ -2,9 +2,12 @@ package com.example.libeery.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,24 +15,30 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libeery.R;
-import com.example.libeery.model.Beer;
 import com.example.libeery.view.DetailsBeerView;
 import com.example.libeery.viewModel.BeersViewModel;
 import com.example.libeery.model.BeerRoom;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.ViewHolder> {
+public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.ViewHolder> implements Filterable {
 
-    private final List<BeerRoom> beers;
-    private List<BeerRoom> filteredBeers;
+    private List<BeerRoom> beers;
+    private List<BeerRoom> beerListFull;
     private final BeersViewModel viewModel;
 
     public SearchBeerAdapter(BeersViewModel viewModel, List<BeerRoom> beers) {
         this.viewModel = viewModel;
         this.beers = beers;
-        this.filteredBeers = beers;
+        this.beerListFull = new ArrayList<>(beers);
+    }
+
+    public void updateBeers(List<BeerRoom> b) {
+        beers = b;
+        beerListFull = new ArrayList<>(beers);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -46,21 +55,37 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return beers.size();
+        return beers ==null?0: beers.size();
     }
 
-    public void filter(String text) {
-        filteredBeers.clear();
-        if(text.isEmpty()){
-            filteredBeers.addAll(viewModel.getBeerList().getValue());
-        } else{
-            text = text.toLowerCase();
-            for(BeerRoom beer: viewModel.getBeerList().getValue()){
-                if(beer.getName().toLowerCase().contains(text))
-                    filteredBeers.add(beer);
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                List<BeerRoom> filteredList = new ArrayList<>();
+                String charString = charSequence.toString();
+                if (charString == null || charString.isEmpty()) {
+                    filteredList.addAll(beerListFull);
+                } else {
+                    for (BeerRoom b : beerListFull) {
+                        if(b.getName().toLowerCase().trim().contains(charString)) {
+                            filteredList.add(b);
+                        }
+                    }
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredList;
+                return filterResults;
             }
-        }
-        notifyDataSetChanged();
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                beers.clear();
+                beers.addAll((List) filterResults.values);
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -108,6 +133,8 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
                 countryTextView.setText(beer.getStyle().getShortName());*/
             if(beer.getImageURL() != null && !beer.getImageURL().isEmpty()){
                 Picasso.get().load(beer.getImageURL()).into(this.beerImage);
+            } else {
+               this.beerImage.setImageResource(R.drawable.ic_beer); 
             }
             if(beer.getFavorite()==1)
                 favoriteImage.setImageResource(R.drawable.ic_lover);

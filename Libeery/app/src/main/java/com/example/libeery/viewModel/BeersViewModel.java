@@ -1,16 +1,8 @@
 package com.example.libeery.viewModel;
-
-import android.app.Application;
-
-import androidx.annotation.NonNull;
-    import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.libeery.model.Beer;
 import com.example.libeery.model.BeerRoom;
-import com.example.libeery.model.Beers;
 import com.example.libeery.repository.BeerRepository;
 
 import java.util.List;

@@ -37,12 +37,9 @@ public class BeerRepository {
         favoriteBeersRoom = beerDao.getFavoriteBeers();
         listBeersRoom = beerDao.getAlphabetizedBeers();
         getBeers();
-        System.out.println("listBeersRoom: "+listBeersRoom);
-        System.out.println("dsds: "+ favoriteBeersRoom);
     }
 
     public LiveData<List<BeerRoom>> getListBeersRoom() {
-        //if(listBeersRoom == null) getBeers();
         return listBeersRoom;
     }
 
@@ -51,15 +48,12 @@ public class BeerRepository {
     }
 
     public void insert(BeerRoom beer) {
-//        beer.setFavorite(true);
         BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
             beerDao.update(beer);
-            listBeersRoom = getListBeersRoom();
         });
     }
 
     public void delete(BeerRoom beer) {
-//        beer.setFavorite(false);
         BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
             beerDao.update(beer);
         });

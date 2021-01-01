@@ -38,7 +38,6 @@ public class SearchBeerFragment extends Fragment {
     private List<BeerRoom> beers = new ArrayList<>();
     private String textSearchView = "";
 
-
     public SearchBeerFragment() {}
 
     public static SearchBeerFragment newInstance() {
@@ -64,8 +63,8 @@ public class SearchBeerFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-        recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerViewSearch);
-        beerSearchView = (SearchView) getView().findViewById(R.id.searchBeerText);
+        recyclerView = getView().findViewById(R.id.recyclerViewSearch);
+        beerSearchView = getView().findViewById(R.id.searchBeerText);
         RecyclerView.LayoutManager layoutManager;
 
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
@@ -88,7 +87,7 @@ public class SearchBeerFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 textSearchView = newText;
-                adapter.filter(newText);
+                adapter.getFilter().filter(newText);
                 return true;
             }
         });
@@ -96,11 +95,8 @@ public class SearchBeerFragment extends Fragment {
 
     private void observeData() {
         viewModel.getBeerList().observe(getViewLifecycleOwner(), list -> {
-            System.out.println("LLIIISSSTT BEER: "+list);
-            List<BeerRoom> beers = list;
-
-            this.beers.addAll(beers);
-            adapter.notifyDataSetChanged();
+            this.beers = new ArrayList<>(list);
+            adapter.updateBeers(beers);
             if(list.size()!=0){
                 getView().findViewById(R.id.progressBar).setVisibility(View.GONE);
             }
@@ -119,7 +115,6 @@ public class SearchBeerFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         adapter.notifyDataSetChanged();
-        System.out.println("CAMARCHE");
     }
 
     @Override

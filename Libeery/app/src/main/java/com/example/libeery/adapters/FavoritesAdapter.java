@@ -12,12 +12,21 @@ import com.example.libeery.R;
 import com.example.libeery.viewModel.BeersViewModel;
 import com.example.libeery.model.BeerRoom;
 
+import java.util.List;
+
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
 
     private final BeersViewModel viewModel;
+    private List<BeerRoom> favoriteList;
 
-    public FavoritesAdapter(BeersViewModel viewModel) {
+    public FavoritesAdapter(BeersViewModel viewModel, List<BeerRoom> list) {
         this.viewModel = viewModel;
+        this.favoriteList = list;
+    }
+
+    public void updateFavorite(List<BeerRoom> list) {
+        favoriteList = list;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -29,17 +38,17 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull FavoritesAdapter.ViewHolder holder, int position) {
-        holder.display(viewModel.getFavoriteList().getValue().get(position));
+        holder.display(favoriteList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return viewModel.getFavoriteList().getValue().size();
+        return favoriteList.size();
     }
 
     public void deleteItem(int position) {
-        viewModel.favoriteList.getValue().get(position).setFavorite(0);
-        viewModel.delete(viewModel.favoriteList.getValue().get(position));
+        favoriteList.get(position).setFavorite(0);
+        viewModel.delete(favoriteList.get(position));
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
