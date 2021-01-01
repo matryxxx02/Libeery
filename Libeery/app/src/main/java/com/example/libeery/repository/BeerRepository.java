@@ -35,21 +35,18 @@ public class BeerRepository {
         beerDao = db.beerDAO();
         beerApi = BeerClient.createService(BeerApi.class);
         favoriteBeersRoom = beerDao.getFavoriteBeers();
-
         listBeersRoom = beerDao.getAlphabetizedBeers();
+        getBeers();
         System.out.println("listBeersRoom: "+listBeersRoom);
         System.out.println("dsds: "+ favoriteBeersRoom);
     }
 
     public LiveData<List<BeerRoom>> getListBeersRoom() {
-        getBeers();
-        System.out.println("getting list: "+listBeersRoom);
+        //if(listBeersRoom == null) getBeers();
         return listBeersRoom;
     }
 
     public LiveData<List<BeerRoom>> getFavoriteBeersRoom() {
-        if(favoriteBeersRoom.getValue()!=null)
-            System.out.println("Favorites: "+ favoriteBeersRoom.getValue().toString());
         return favoriteBeersRoom;
     }
 
@@ -57,6 +54,7 @@ public class BeerRepository {
 //        beer.setFavorite(true);
         BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
             beerDao.update(beer);
+            listBeersRoom = getListBeersRoom();
         });
     }
 
@@ -75,7 +73,6 @@ public class BeerRepository {
                     beerListResponse.setValue(response.body());
                     BeerAPItoBeerRoom(beerListResponse.getValue());
                     listBeersRoom = beerDao.getAlphabetizedBeers();
-                    System.out.println("listBeersRoom after getBeer: "+listBeersRoom);
                 }
             }
 

@@ -1,5 +1,6 @@
 package com.example.libeery.view;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -112,6 +113,13 @@ public class SearchBeerFragment extends Fragment {
 
         if (savedInstanceState != null)
             beerSearchView.setQuery(textSearchView, false);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        adapter.notifyDataSetChanged();
+        System.out.println("CAMARCHE");
     }
 
     @Override

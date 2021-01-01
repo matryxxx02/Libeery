@@ -34,11 +34,11 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
     @Override
     public int getItemCount() {
-        System.out.println(viewModel.getFavoriteList());
         return viewModel.getFavoriteList().getValue().size();
     }
 
     public void deleteItem(int position) {
+        viewModel.favoriteList.getValue().get(position).setFavorite(0);
         viewModel.delete(viewModel.favoriteList.getValue().get(position));
     }
 

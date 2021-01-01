@@ -50,17 +50,17 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
     }
 
     public void filter(String text) {
-        /*filteredBeers.clear();
+        filteredBeers.clear();
         if(text.isEmpty()){
-            filteredBeers.addAll(viewModel.getBeerList().getValue().getBeers());
+            filteredBeers.addAll(viewModel.getBeerList().getValue());
         } else{
             text = text.toLowerCase();
-            for(Beer beer: viewModel.getBeerList().getValue().getBeers()){
+            for(BeerRoom beer: viewModel.getBeerList().getValue()){
                 if(beer.getName().toLowerCase().contains(text))
                     filteredBeers.add(beer);
             }
         }
-        notifyDataSetChanged();*/
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -88,7 +88,7 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
                     viewModel.delete(beer);
             });
 
-           /* itemView.setOnClickListener(new View.OnClickListener() {
+           itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Context context = v.getContext();
@@ -96,7 +96,7 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
                     intent.putExtra("beer", beer);
                     context.startActivity(intent);
                 }
-            });*/
+            });
 
         }
 
@@ -107,7 +107,6 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
             /*if(beer.getStyle() != null)
                 countryTextView.setText(beer.getStyle().getShortName());*/
             if(beer.getImageURL() != null && !beer.getImageURL().isEmpty()){
-                System.out.println(beer.getImageURL());
                 Picasso.get().load(beer.getImageURL()).into(this.beerImage);
             }
             if(beer.getFavorite()==1)

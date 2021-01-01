@@ -32,7 +32,7 @@ import static com.example.libeery.R.drawable.ic_like_detail;
 import static com.example.libeery.R.drawable.ic_lover_detail;
 
 public class DetailsBeerView extends AppCompatActivity {
-    private Beer beer;
+    private BeerRoom beer;
     private ImageView beerImage;
     private CollapsingToolbarLayout titleToolbar;
     private Toolbar toolbar;
@@ -61,29 +61,28 @@ public class DetailsBeerView extends AppCompatActivity {
 
         if(i != null){
             beer = i.getParcelableExtra("beer");
-            System.out.println(beer.toString());
             setBeerFields();
         }
 
     }
 
     private void setBeerFields() {
-        if(beer.getLabels() != null && beer.getLabels().getMedium() != null){
-            Picasso.get().load(beer.getLabels().getLarge()).into(LoadImage());
+        if(beer.getImageURL() != null && !beer.getImageURL().isEmpty()){
+            Picasso.get().load(beer.getImageURL()).into(LoadImage());
+        } else {
+            //TODO: gerer le else (si il y a pas d'image mettre une image de beer)
+            progressBarDetail.setVisibility(View.INVISIBLE);
         }
-        //TODO: gerer le else (si il y a pas d'image mettre une image de beer)
 
-        beerName.setText(beer.getNameDisplay());
-        if(beer.getStyle() != null && beer.getStyle().getDescription() != null) description.setText(beer.getStyle().getDescription());
+        beerName.setText(beer.getCatName());
+        if(beer.getLongDescription() != null) description.setText(beer.getLongDescription());
 
         if(beer.getAbv()!=null) abv.setText(beer.getAbv()+" %");
 
-        String date = "/";
-        if(beer.getStyle() != null && beer.getStyle().getUpdateDate() != null) date = beer.getStyle().getUpdateDate().split(" ")[0].replace("-","/");
-        updateDate.setText(date);
+        if(beer.getUpdateDate() != null) updateDate.setText(beer.getUpdateDate().split(" ")[0].replace("-","/"));
 
-        if(beer.getStatus()=="verified") infoStatus.setText("Verified");
-        else infoStatus.setText("Not verified");
+        //if(beer.()=="verified") infoStatus.setText("Verified");
+        //else infoStatus.setText("Not verified");
 
         if(beer.getDescription() != null) miniDescript.setText(beer.getDescription().length()>0 ? beer.getDescription() : "/");
         else miniDescript.setText(beer.getName());
@@ -100,7 +99,7 @@ public class DetailsBeerView extends AppCompatActivity {
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + verticalOffset == 0) {
-                    titleToolbar.setTitle(beer.getNameDisplay());
+                    titleToolbar.setTitle(beer.getCatName());
                     isShow = true;
                 } else if(isShow) {
                     titleToolbar.setTitle(" ");//careful there should a space between double quote otherwise it wont work
@@ -179,7 +178,7 @@ public class DetailsBeerView extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         final MenuItem favoriteItem = menu.findItem(R.id.favoriteDetail);
-        if(beer != null && beer.isFavorite())
+        if(beer != null && beer.getFavorite()==1)
             favoriteItem.setIcon(getDrawable(R.drawable.ic_lover_detail));
         else
             favoriteItem.setIcon(getDrawable(R.drawable.ic_like_detail));
@@ -190,15 +189,15 @@ public class DetailsBeerView extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.favoriteDetail :
-               /* if(beer != null && beer.isFavorite()){
+                if(beer != null && beer.getFavorite()==1){
                     item.setIcon(ic_like_detail);
-                    beer.setFavorite(false);
-                    viewModel.delete(new BeerRoom(beer.getId(), beer.getName(), beer.getNameDisplay(), beer.getName(), beer.getDescription()));
+                    beer.setFavorite(0);
+                    viewModel.delete(beer);
                 } else {
                     item.setIcon(ic_lover_detail);
-                    beer.setFavorite(true);
-                    viewModel.insert(new BeerRoom(beer.getId(), beer.getName(), beer.getNameDisplay(), beer.getName(), beer.getDescription()));
-                }*/
+                    beer.setFavorite(1);
+                    viewModel.insert(beer);
+                }
                 return true;
             case android.R.id.home :
                 onBackPressed();

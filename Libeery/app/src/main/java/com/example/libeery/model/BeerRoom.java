@@ -1,12 +1,15 @@
 package com.example.libeery.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "beer_table")
-public class BeerRoom {
+public class BeerRoom implements Parcelable {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "id")
@@ -64,6 +67,30 @@ public class BeerRoom {
         else this.imageURL = "";
     }
 
+    protected BeerRoom(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        catName = in.readString();
+        description = in.readString();
+        favorite = in.readInt();
+        updateDate = in.readString();
+        longDescription = in.readString();
+        abv = in.readString();
+        imageURL = in.readString();
+    }
+
+    public static final Creator<BeerRoom> CREATOR = new Creator<BeerRoom>() {
+        @Override
+        public BeerRoom createFromParcel(Parcel in) {
+            return new BeerRoom(in);
+        }
+
+        @Override
+        public BeerRoom[] newArray(int size) {
+            return new BeerRoom[size];
+        }
+    };
+
     @NonNull
     public String getId() {
         return id;
@@ -113,5 +140,23 @@ public class BeerRoom {
                 ", description='" + description + '\'' +
                 ", favorite=" + favorite +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(name);
+        parcel.writeString(catName);
+        parcel.writeString(description);
+        parcel.writeInt(favorite);
+        parcel.writeString(updateDate);
+        parcel.writeString(longDescription);
+        parcel.writeString(abv);
+        parcel.writeString(imageURL);
     }
 }
