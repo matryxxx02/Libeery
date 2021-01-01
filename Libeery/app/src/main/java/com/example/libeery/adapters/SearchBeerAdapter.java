@@ -36,8 +36,8 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
     }
 
     public void updateBeers(List<BeerRoom> b) {
-        beers = b;
-        beerListFull = new ArrayList<>(beers);
+        beerListFull = new ArrayList<>(b);
+        beers = b
         notifyDataSetChanged();
     }
 
@@ -65,7 +65,7 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
             protected FilterResults performFiltering(CharSequence charSequence) {
                 List<BeerRoom> filteredList = new ArrayList<>();
                 String charString = charSequence.toString();
-                if (charString == null || charString.isEmpty()) {
+                if (charString.isEmpty()) {
                     filteredList.addAll(beerListFull);
                 } else {
                     for (BeerRoom b : beerListFull) {
@@ -134,7 +134,7 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
             if(beer.getImageURL() != null && !beer.getImageURL().isEmpty()){
                 Picasso.get().load(beer.getImageURL()).into(this.beerImage);
             } else {
-               this.beerImage.setImageResource(R.drawable.ic_beer); 
+               this.beerImage.setImageResource(R.drawable.ic_beer);
             }
             if(beer.getFavorite()==1)
                 favoriteImage.setImageResource(R.drawable.ic_lover);

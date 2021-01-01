@@ -1,5 +1,6 @@
 package com.example.libeery.view;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
@@ -71,6 +72,8 @@ public class DetailsBeerView extends AppCompatActivity {
             Picasso.get().load(beer.getImageURL()).into(LoadImage());
         } else {
             //TODO: gerer le else (si il y a pas d'image mettre une image de beer)
+            this.beerImage.setImageResource(R.drawable.ic_beer);
+            findViewById(R.id.srimImage).setVisibility(View.INVISIBLE);
             progressBarDetail.setVisibility(View.INVISIBLE);
         }
 

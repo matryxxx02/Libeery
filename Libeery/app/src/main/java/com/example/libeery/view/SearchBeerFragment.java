@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -36,7 +37,7 @@ public class SearchBeerFragment extends Fragment {
     private SearchBeerAdapter adapter;
     private BeersViewModel viewModel;
     private List<BeerRoom> beers = new ArrayList<>();
-    private String textSearchView = "";
+    private String textSearchView;
 
     public SearchBeerFragment() {}
 
@@ -77,7 +78,7 @@ public class SearchBeerFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setNestedScrollingEnabled(true);
-
+        beerSearchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         beerSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -87,8 +88,9 @@ public class SearchBeerFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 textSearchView = newText;
-                adapter.getFilter().filter(newText);
-                return true;
+                if(beerSearchView.getWidth()>0)
+                    adapter.getFilter().filter(newText);
+                return false;
             }
         });
     }
@@ -109,12 +111,6 @@ public class SearchBeerFragment extends Fragment {
 
         if (savedInstanceState != null)
             beerSearchView.setQuery(textSearchView, false);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        adapter.notifyDataSetChanged();
     }
 
     @Override
