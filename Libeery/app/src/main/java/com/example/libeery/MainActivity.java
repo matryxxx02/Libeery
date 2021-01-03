@@ -24,21 +24,6 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout noInternetFrameLayout;
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        if(currentFragment != null)
-            getSupportFragmentManager().putFragment(outState, FRAGMENT_STORED_KEY, currentFragment);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        if(currentFragment != null){
-            getSupportFragmentManager().putFragment(outState, FRAGMENT_STORED_KEY, currentFragment);
-        }
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

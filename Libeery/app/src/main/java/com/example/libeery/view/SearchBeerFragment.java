@@ -38,8 +38,6 @@ public class SearchBeerFragment extends Fragment {
     private SearchView beerSearchView;
     private SearchBeerAdapter adapter;
     private ListViewModel viewModel;
-    private List<Beer> beers = new ArrayList<>();
-    private String textSearchView = "";
 
     public SearchBeerFragment() {}
 
