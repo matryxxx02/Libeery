@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -36,6 +38,8 @@ public class SearchBeerFragment extends Fragment {
     private SearchView beerSearchView;
     private SearchBeerAdapter adapter;
     private ListViewModel viewModel;
+    private List<Beer> beers = new ArrayList<>();
+    private String textSearchView = "";
 
     public SearchBeerFragment() {}
 

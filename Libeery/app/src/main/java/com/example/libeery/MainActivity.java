@@ -1,5 +1,6 @@
 package com.example.libeery;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -30,19 +31,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if(currentFragment != null){
+            getSupportFragmentManager().putFragment(outState, FRAGMENT_STORED_KEY, currentFragment);
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fragmentArray = new SparseArray<>(2);
         navBar = findViewById(R.id.navBar);
-        noInternetFrameLayout = (FrameLayout) findViewById(R.id.noInternetFrameLayout);
 
-        if (savedInstanceState != null)
+        if(savedInstanceState != null){
             currentFragment = getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_STORED_KEY);
-        else {
-            currentFragment = new FavoritesFragment();
-            navBar.setItemSelected(R.id.favorites, true);
-            fragmentArray.append(1, currentFragment);
+        }else{
+            currentFragment = new SearchBeerFragment();
+            navBar.setItemSelected(R.id.beers, true);
         }
         replaceFragment(currentFragment);
 
