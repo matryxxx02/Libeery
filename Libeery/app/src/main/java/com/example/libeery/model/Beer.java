@@ -1,9 +1,12 @@
 package com.example.libeery.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Beer {
+public class Beer implements Parcelable {
     @SerializedName("id")
     @Expose
     private String id;
@@ -74,6 +77,59 @@ public class Beer {
     @Expose
     private String type;
     private boolean isFavorite;
+
+
+    protected Beer(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        nameDisplay = in.readString();
+        description = in.readString();
+        abv = in.readString();
+        if (in.readByte() == 0) {
+            glasswareId = null;
+        } else {
+            glasswareId = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            srmId = null;
+        } else {
+            srmId = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            availableId = null;
+        } else {
+            availableId = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            styleId = null;
+        } else {
+            styleId = in.readInt();
+        }
+        isOrganic = in.readString();
+        isRetired = in.readString();
+        labels = in.readParcelable(Labels.class.getClassLoader());
+        status = in.readString();
+        statusDisplay = in.readString();
+        servingTemperature = in.readString();
+        servingTemperatureDisplay = in.readString();
+        createDate = in.readString();
+        updateDate = in.readString();
+        style = in.readParcelable(Style.class.getClassLoader());
+        type = in.readString();
+        isFavorite = in.readByte() != 0;
+    }
+
+    public static final Creator<Beer> CREATOR = new Creator<Beer>() {
+        @Override
+        public Beer createFromParcel(Parcel in) {
+            return new Beer(in);
+        }
+
+        @Override
+        public Beer[] newArray(int size) {
+            return new Beer[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -296,6 +352,56 @@ public class Beer {
         isFavorite = favorite;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(nameDisplay);
+        dest.writeString(description);
+        dest.writeString(abv);
+        if (glasswareId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(glasswareId);
+        }
+        if (srmId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(srmId);
+        }
+        if (availableId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(availableId);
+        }
+        if (styleId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(styleId);
+        }
+        dest.writeString(isOrganic);
+        dest.writeString(isRetired);
+        dest.writeParcelable(labels, flags);
+        dest.writeString(status);
+        dest.writeString(statusDisplay);
+        dest.writeString(servingTemperature);
+        dest.writeString(servingTemperatureDisplay);
+        dest.writeString(createDate);
+        dest.writeString(updateDate);
+        dest.writeParcelable(style, flags);
+        dest.writeString(type);
+        dest.writeByte((byte) (isFavorite ? 1 : 0));
+    }
+
     public class Category {
 
         @SerializedName("id")
@@ -388,7 +494,7 @@ public class Beer {
         }
     }
 
-    public class Labels {
+    public static class Labels implements Parcelable {
 
         @SerializedName("icon")
         @Expose
@@ -408,6 +514,27 @@ public class Beer {
         @SerializedName("contentAwareLarge")
         @Expose
         private String contentAwareLarge;
+
+        protected Labels(Parcel in) {
+            icon = in.readString();
+            medium = in.readString();
+            large = in.readString();
+            contentAwareIcon = in.readString();
+            contentAwareMedium = in.readString();
+            contentAwareLarge = in.readString();
+        }
+
+        public static final Creator<Labels> CREATOR = new Creator<Labels>() {
+            @Override
+            public Labels createFromParcel(Parcel in) {
+                return new Labels(in);
+            }
+
+            @Override
+            public Labels[] newArray(int size) {
+                return new Labels[size];
+            }
+        };
 
         public String getIcon() {
             return icon;
@@ -468,6 +595,21 @@ public class Beer {
                     ", contentAwareLarge='" + contentAwareLarge + '\'' +
                     '}';
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(icon);
+            dest.writeString(medium);
+            dest.writeString(large);
+            dest.writeString(contentAwareIcon);
+            dest.writeString(contentAwareMedium);
+            dest.writeString(contentAwareLarge);
+        }
     }
 
     public class Srm {
@@ -516,7 +658,7 @@ public class Beer {
         }
     }
 
-    public class Style {
+    public static class Style implements Parcelable {
 
         @SerializedName("id")
         @Expose
@@ -569,6 +711,45 @@ public class Beer {
         @SerializedName("updateDate")
         @Expose
         private String updateDate;
+
+        protected Style(Parcel in) {
+            if (in.readByte() == 0) {
+                id = null;
+            } else {
+                id = in.readInt();
+            }
+            if (in.readByte() == 0) {
+                categoryId = null;
+            } else {
+                categoryId = in.readInt();
+            }
+            name = in.readString();
+            shortName = in.readString();
+            description = in.readString();
+            ibuMin = in.readString();
+            ibuMax = in.readString();
+            abvMin = in.readString();
+            abvMax = in.readString();
+            srmMin = in.readString();
+            srmMax = in.readString();
+            ogMin = in.readString();
+            fgMin = in.readString();
+            fgMax = in.readString();
+            createDate = in.readString();
+            updateDate = in.readString();
+        }
+
+        public static final Creator<Style> CREATOR = new Creator<Style>() {
+            @Override
+            public Style createFromParcel(Parcel in) {
+                return new Style(in);
+            }
+
+            @Override
+            public Style[] newArray(int size) {
+                return new Style[size];
+            }
+        };
 
         public Integer getId() {
             return id;
@@ -727,6 +908,41 @@ public class Beer {
                     ", createDate='" + createDate + '\'' +
                     ", updateDate='" + updateDate + '\'' +
                     '}';
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            if (id == null) {
+                dest.writeByte((byte) 0);
+            } else {
+                dest.writeByte((byte) 1);
+                dest.writeInt(id);
+            }
+            if (categoryId == null) {
+                dest.writeByte((byte) 0);
+            } else {
+                dest.writeByte((byte) 1);
+                dest.writeInt(categoryId);
+            }
+            dest.writeString(name);
+            dest.writeString(shortName);
+            dest.writeString(description);
+            dest.writeString(ibuMin);
+            dest.writeString(ibuMax);
+            dest.writeString(abvMin);
+            dest.writeString(abvMax);
+            dest.writeString(srmMin);
+            dest.writeString(srmMax);
+            dest.writeString(ogMin);
+            dest.writeString(fgMin);
+            dest.writeString(fgMax);
+            dest.writeString(createDate);
+            dest.writeString(updateDate);
         }
     }
 

@@ -1,30 +1,30 @@
 package com.example.libeery.viewModel;
-
-import android.app.Application;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.example.libeery.model.BeerRoom;
 import com.example.libeery.repository.BeerRepository;
 
 import java.util.List;
 
-public class ListViewModel extends AndroidViewModel {
+public class BeersViewModel extends ViewModel {
 
     private BeerRepository beerRepository;
-
+    private LiveData<List<BeerRoom>> beerList;
     public final LiveData<List<BeerRoom>> favoriteList;
 
-    public ListViewModel(@NonNull Application application) {
-        super(application);
-        beerRepository = new BeerRepository(application);
-        favoriteList = beerRepository.getListBeers();
+    public BeersViewModel(BeerRepository br) {
+        beerRepository = br;
+        beerList = beerRepository.getListBeersRoom();
+        favoriteList = beerRepository.getFavoriteBeersRoom();
     }
 
-    public void getBeers(){
+    public LiveData<List<BeerRoom>> getBeerList() {
+        return beerList;
+    }
 
+    public LiveData<List<BeerRoom>> getFavoriteList() {
+        return favoriteList;
     }
 
     public void insert(BeerRoom beerRoom) {

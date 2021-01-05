@@ -1,40 +1,43 @@
 package com.example.libeery.view;
 
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.view.inputmethod.EditorInfo;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libeery.R;
 import com.example.libeery.adapters.SearchBeerAdapter;
-import com.example.libeery.api.BeerApi;
-import com.example.libeery.api.BeerClient;
-import com.example.libeery.model.Beers;
 import com.example.libeery.model.Beer;
-import com.example.libeery.viewModel.ListViewModel;
+import com.example.libeery.model.BeerRoom;
+import com.example.libeery.viewModel.BeersViewModel;
+import com.example.libeery.viewModel.BeersViewModelFactory;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class SearchBeerFragment extends Fragment {
 
+    public static final String TEXT_IN_SEARCHBAR = "TextSearchView";
+
     private RecyclerView recyclerView;
-    private TextView searchBeerTextView;
+    private SearchView beerSearchView;
     private SearchBeerAdapter adapter;
-    private ListViewModel viewModel;
+    private BeersViewModel viewModel;
+    private List<BeerRoom> beers = new ArrayList<>();
+    private String textSearchView;
 
     public SearchBeerFragment() {}
 
@@ -50,45 +53,69 @@ public class SearchBeerFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerViewSearch);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        searchBeerTextView = (TextView) getView().findViewById(R.id.searchBeerText);
+        super.onViewCreated(view, savedInstanceState);
 
-        searchBeerTextView.addTextChangedListener(new TextWatcher() {
+        BeersViewModelFactory factory = BeersViewModelFactory.getInstance();
+        factory.initFactory(getActivity().getApplication());
+        viewModel = new ViewModelProvider(requireActivity(), factory).get(BeersViewModel.class);
+
+        initRecyclerView();
+        observeData();
+    }
+
+    private void initRecyclerView() {
+        recyclerView = getView().findViewById(R.id.recyclerViewSearch);
+        beerSearchView = getView().findViewById(R.id.searchBeerText);
+        RecyclerView.LayoutManager layoutManager;
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            layoutManager = new GridLayoutManager(getActivity(),2 );
+        else
+            layoutManager = new LinearLayoutManager(getActivity());
+
+        adapter = new SearchBeerAdapter(viewModel, beers);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setNestedScrollingEnabled(true);
+        beerSearchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        beerSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            public boolean onQueryTextSubmit(String query) {
+                return false;
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                /*adapter = new SearchBeerAdapter(, viewModel);
-                recyclerView.setAdapter(adapter);*/
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+            public boolean onQueryTextChange(String newText) {
+                textSearchView = newText;
+                if(beerSearchView.getWidth()>0)
+                    adapter.getFilter().filter(newText);
+                return false;
             }
         });
+    }
 
-        //TEST APIII
-        //TODO: recup les datas du body et les parse en Beer
-        Call<Beers> mealsCall = BeerClient.getBeerClient().create(BeerApi.class).getBeers();
-        mealsCall.enqueue(new Callback<Beers>() {
-            @Override
-            public void onResponse(@NonNull Call<Beers> call, @NonNull Response<Beers> response) {
-                List<Beer> b = response.body().getBeers();
-                System.out.println(b.get(4).toString());
-                viewModel = new ViewModelProvider(requireActivity()).get(ListViewModel.class);
-                adapter = new SearchBeerAdapter(b,viewModel);
-                recyclerView.setAdapter(adapter);
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Beers> call, @NonNull Throwable t) {
-
+    private void observeData() {
+        viewModel.getBeerList().observe(getViewLifecycleOwner(), list -> {
+            this.beers = new ArrayList<>(list);
+            adapter.updateBeers(beers);
+            if(list.size()!=0){
+                getView().findViewById(R.id.progressBar).setVisibility(View.GONE);
             }
         });
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null)
+            beerSearchView.setQuery(textSearchView, false);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(TEXT_IN_SEARCHBAR, textSearchView);
     }
 }

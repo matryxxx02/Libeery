@@ -9,15 +9,24 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libeery.R;
-import com.example.libeery.viewModel.ListViewModel;
+import com.example.libeery.viewModel.BeersViewModel;
 import com.example.libeery.model.BeerRoom;
+
+import java.util.List;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
 
-    private final ListViewModel viewModel;
+    private final BeersViewModel viewModel;
+    private List<BeerRoom> favoriteList;
 
-    public FavoritesAdapter(ListViewModel viewModel) {
+    public FavoritesAdapter(BeersViewModel viewModel, List<BeerRoom> list) {
         this.viewModel = viewModel;
+        this.favoriteList = list;
+    }
+
+    public void updateFavorite(List<BeerRoom> list) {
+        favoriteList = list;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -29,16 +38,17 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull FavoritesAdapter.ViewHolder holder, int position) {
-        holder.display(viewModel.favoriteList.getValue().get(position));
+        holder.display(favoriteList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return viewModel.favoriteList.getValue().size();
+        return favoriteList.size();
     }
 
     public void deleteItem(int position) {
-        viewModel.delete(viewModel.favoriteList.getValue().get(position));
+        favoriteList.get(position).setFavorite(0);
+        viewModel.delete(favoriteList.get(position));
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -59,7 +69,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         public void display(BeerRoom beer) {
             nameTextView.setText(beer.getName());
             catNameTextView.setText(beer.getCatName());
-            countryTextView.setText(beer.getCountry());
+            countryTextView.setText(beer.getAbv());
             descriptionTextView.setText(beer.getDescription());
         }
     }
