@@ -4,8 +4,7 @@ Master1 E-Services - binôme : Genart Valentin - Fernandes Nicolas
 
 Voici le dépôt du Projet final de TAC.
 
----
-Libeery est une application Android qui permet de lister les bières d'une API. Elle implémente une architecture ... .
+Libeery est une application Android qui permet de decouvrir des bières et de les garder en favoris. Elle implémente une architecture MVVM et le pattern repository.
 On utilise retrofit pour requeter l'API et room DB pour les données en local.
 
 ## API utilisée :
@@ -15,8 +14,13 @@ On utilise retrofit pour requeter l'API et room DB pour les données en local.
 - [Retrofit2](https://square.github.io/retrofit/)
 - [Room](https://developer.android.com/training/data-storage/room)
 - [Chipnavigation](https://github.com/ismaeldivita/chip-navigation-bar)
+- [Picasso](https://square.github.io/picasso/)
+---
+## Quelques captures :
 
-------
+![screenshots](./screenshots.png)
+
+---
 
 ## Fonctionnement Git
 

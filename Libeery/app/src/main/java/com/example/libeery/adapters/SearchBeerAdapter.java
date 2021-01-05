@@ -127,7 +127,6 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
 
         public void display(BeerRoom beer) {
             this.beer = beer;
-            System.out.println(beer.getStyleName());
             nameTextView.setText(beer.getName());
             catNameTextView.setText(beer.getStyleName());
             abvTextView.setText(beer.getAbv());

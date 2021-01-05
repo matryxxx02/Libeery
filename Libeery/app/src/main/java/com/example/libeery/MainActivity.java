@@ -52,16 +52,13 @@ public class MainActivity extends AppCompatActivity {
                     if(fragmentArray.get(0) == null) {
                         currentFragment = SearchBeerFragment.newInstance();
                         fragmentArray.append(0, currentFragment);
-                        System.out.println("fragment unsaved");
                     }else
                         currentFragment = fragmentArray.get(0);
-                    System.out.println("fragment saved");
                     break;
                 case R.id.favorites:
                     if(fragmentArray.get(1) == null) {
                         currentFragment = FavoritesFragment.newInstance();
                         fragmentArray.append(1, currentFragment);
-                        System.out.println("fragment unsaved");
                     }else
                         System.out.println("fragment saved");
                         currentFragment = fragmentArray.get(1);

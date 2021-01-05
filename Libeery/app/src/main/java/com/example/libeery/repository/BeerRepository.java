@@ -77,12 +77,8 @@ public class BeerRepository {
 
     public void BeerAPItoBeerRoom(Beers beers) {
         List<BeerRoom> dbBeers = new ArrayList<>();
-        for(Beer beer : beers.getBeers()){
-          if(beer.getStyle() != null && beer.getStyle().getCategory() != null && beer.getStyle().getCategory().getName() != null)
-              System.out.println(beer.getStyle().getCategory().getName());
+        for(Beer beer : beers.getBeers())
             dbBeers.add(new BeerRoom(beer));
-
-        }
         BeerRoomDatabase.databaseWriteExecutor.execute(() -> {
             beerDao.insertAll(dbBeers);
         });

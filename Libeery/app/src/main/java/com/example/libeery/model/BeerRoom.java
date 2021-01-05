@@ -74,8 +74,7 @@ public class BeerRoom implements Parcelable {
         else this.imageURL = "";
 
         if(b.getStyle() != null && b.getStyle().getCategory() != null && b.getStyle().getCategory().getName() != null) this.styleName = b.getStyle().getCategory().getName();
-        else this.styleName = "stylle";
-        System.out.println(styleName);
+        else this.styleName = "";
     }
 
     protected BeerRoom(Parcel in) {

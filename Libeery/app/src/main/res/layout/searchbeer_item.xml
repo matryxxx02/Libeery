@@ -44,7 +44,7 @@
             app:layout_constraintBottom_toTopOf="@+id/abvTextView"
             app:layout_constraintStart_toStartOf="@+id/nameTextView"
             app:layout_constraintTop_toBottomOf="@+id/nameTextView"
-            app:layout_constraintVertical_bias="0.461"
+            app:layout_constraintVertical_bias="0.0"
             tools:text="North American Ale" />
 
         <TextView
