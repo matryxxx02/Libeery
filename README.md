@@ -1,6 +1,22 @@
-# Libeery
+# 🍺 Libeery 🍺
 
-Application Android projet Master1 E-Services - binôme : Genart Valentin - Fernandes Nicolas
+Master1 E-Services - binôme : Genart Valentin - Fernandes Nicolas
+
+Voici le dépôt du Projet final de TAC.
+
+---
+Libeery est une application Android qui permet de lister les bières d'une API. Elle implémente une architecture ... .
+On utilise retrofit pour requeter l'API et room DB pour les données en local.
+
+## API utilisée :
+[BreweryDB](https://www.brewerydb.com/developers/docs/endpoint/beer-index)
+
+## Librairies utilisées :
+- [Retrofit2](https://square.github.io/retrofit/)
+- [Room](https://developer.android.com/training/data-storage/room)
+- [Chipnavigation](https://github.com/ismaeldivita/chip-navigation-bar)
+
+------
 
 ## Fonctionnement Git
 
