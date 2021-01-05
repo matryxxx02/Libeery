@@ -26,6 +26,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -80,12 +81,9 @@ public class DetailsBeerView extends AppCompatActivity {
         beerName.setText(beer.getCatName());
         if(beer.getLongDescription() != null) description.setText(beer.getLongDescription());
 
-        if(beer.getAbv()!=null) abv.setText(beer.getAbv()+" %");
+        if(beer.getAbv()!=null) abv.setText(beer.getAbv());
 
         if(beer.getUpdateDate() != null) updateDate.setText(beer.getUpdateDate().split(" ")[0].replace("-","/"));
-
-        //if(beer.()=="verified") infoStatus.setText("Verified");
-        //else infoStatus.setText("Not verified");
 
         if(beer.getDescription() != null) miniDescript.setText(beer.getDescription().length()>0 ? beer.getDescription() : "/");
         else miniDescript.setText(beer.getName());

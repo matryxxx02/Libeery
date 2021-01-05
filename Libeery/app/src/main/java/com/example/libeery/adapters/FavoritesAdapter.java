@@ -62,13 +62,13 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
             super(itemView);
             this.nameTextView = itemView.findViewById(R.id.nameTextView);
             this.catNameTextView = itemView.findViewById(R.id.catNameTextView);
-            this.countryTextView = itemView.findViewById(R.id.countryTextView);
+            this.countryTextView = itemView.findViewById(R.id.abvTextView);
             this.descriptionTextView = itemView.findViewById(R.id.descriptionTextView);
         }
 
         public void display(BeerRoom beer) {
             nameTextView.setText(beer.getName());
-            catNameTextView.setText(beer.getCatName());
+            catNameTextView.setText(beer.getStyleName());
             countryTextView.setText(beer.getAbv());
             descriptionTextView.setText(beer.getDescription());
         }

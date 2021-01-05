@@ -93,15 +93,15 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
         private BeerRoom beer;
         public TextView nameTextView;
         public TextView catNameTextView;
-        public TextView countryTextView;
+        public TextView abvTextView;
         public ImageView favoriteImage;
         public ImageView beerImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.nameTextView = itemView.findViewById(R.id.nameTextView);
-            this.catNameTextView = itemView.findViewById(R.id.catNameTextView);
-            this.countryTextView = itemView.findViewById(R.id.countryTextView);
+            this.catNameTextView = itemView.findViewById(R.id.styleNameTextView);
+            this.abvTextView = itemView.findViewById(R.id.abvTextView);
             this.favoriteImage = itemView.findViewById(R.id.favoriteImage);
             this.beerImage = itemView.findViewById(R.id.beerImage);
             this.favoriteImage.setOnClickListener(v -> {
@@ -127,10 +127,10 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
 
         public void display(BeerRoom beer) {
             this.beer = beer;
+            System.out.println(beer.getStyleName());
             nameTextView.setText(beer.getName());
-            catNameTextView.setText(beer.getCatName());
-            /*if(beer.getStyle() != null)
-                countryTextView.setText(beer.getStyle().getShortName());*/
+            catNameTextView.setText(beer.getStyleName());
+            abvTextView.setText(beer.getAbv());
             if(beer.getImageURL() != null && !beer.getImageURL().isEmpty()){
                 Picasso.get().load(beer.getImageURL()).into(this.beerImage);
             } else {

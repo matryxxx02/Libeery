@@ -11,5 +11,6 @@
     <string name="status">Info status</string>
     <string name="beerName">Beer Name</string>
     <string name="statusVerified">Verified</string>
+    <string name="statusNotVerified">Not Verified</string>
     <string name="favorite">Favorite</string>
 </resources>

@@ -41,13 +41,16 @@
             tools:text="North American Ale" />
 
         <TextView
-            android:id="@+id/countryTextView"
+            android:id="@+id/abvTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:textColor="#000000"
-            app:layout_constraintStart_toStartOf="@+id/catNameTextView"
-            app:layout_constraintTop_toBottomOf="@+id/catNameTextView"
-            tools:text="United States" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.93"
+            app:layout_constraintStart_toEndOf="@+id/nameTextView"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="10.2 %" />
 
         <TextView
             android:id="@+id/descriptionTextView"
@@ -61,7 +64,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/countryTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/catNameTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
