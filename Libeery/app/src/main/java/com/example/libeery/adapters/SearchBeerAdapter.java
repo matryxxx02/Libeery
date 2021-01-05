@@ -37,7 +37,7 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
 
     public void updateBeers(List<BeerRoom> b) {
         beerListFull = new ArrayList<>(b);
-        beers = b
+        beers = b;
         notifyDataSetChanged();
     }
 
