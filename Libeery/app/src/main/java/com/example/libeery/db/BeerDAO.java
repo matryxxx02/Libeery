@@ -9,7 +9,6 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.example.libeery.model.BeerRoom;
-import com.example.libeery.model.Beers;
 
 import java.util.List;
 

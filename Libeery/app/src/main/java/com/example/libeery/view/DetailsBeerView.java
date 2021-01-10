@@ -1,6 +1,5 @@
 package com.example.libeery.view;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.libeery.R;
-import com.example.libeery.model.Beer;
 import com.example.libeery.model.BeerRoom;
 import com.example.libeery.viewModel.BeersViewModel;
 import com.example.libeery.viewModel.BeersViewModelFactory;
@@ -80,12 +78,9 @@ public class DetailsBeerView extends AppCompatActivity {
         beerName.setText(beer.getCatName());
         if(beer.getLongDescription() != null) description.setText(beer.getLongDescription());
 
-        if(beer.getAbv()!=null) abv.setText(beer.getAbv()+" %");
+        if(beer.getAbv()!=null) abv.setText(beer.getAbv());
 
         if(beer.getUpdateDate() != null) updateDate.setText(beer.getUpdateDate().split(" ")[0].replace("-","/"));
-
-        //if(beer.()=="verified") infoStatus.setText("Verified");
-        //else infoStatus.setText("Not verified");
 
         if(beer.getDescription() != null) miniDescript.setText(beer.getDescription().length()>0 ? beer.getDescription() : "/");
         else miniDescript.setText(beer.getName());

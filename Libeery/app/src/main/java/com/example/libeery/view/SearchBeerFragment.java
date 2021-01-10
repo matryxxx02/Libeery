@@ -1,6 +1,5 @@
 package com.example.libeery.view;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libeery.R;
 import com.example.libeery.adapters.SearchBeerAdapter;
-import com.example.libeery.model.Beer;
 import com.example.libeery.model.BeerRoom;
 import com.example.libeery.viewModel.BeersViewModel;
 import com.example.libeery.viewModel.BeersViewModelFactory;

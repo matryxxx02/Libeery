@@ -28,5 +28,16 @@
         <item name="android:shadowColor">@android:color/darker_gray</item>
     </style>
 
+    <style name="verifiedInfo">
+        <item name="android:text">@string/statusVerified</item>
+        <item name="android:drawableStart">@drawable/ic_check</item>
+    </style>
+
+    <style name="notVerifiedInfo">
+        <item name="android:text">@string/statusNotVerified</item>
+        <item name="android:drawableStart">@drawable/ic_not_check_24</item>
+    </style>
+
+
 
 </resources>

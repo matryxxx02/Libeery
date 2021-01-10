@@ -8,31 +8,37 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+
 @Entity(tableName = "beer_table")
 public class BeerRoom implements Parcelable {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "id")
-    private String id;
+    private final String id;
     @NonNull
     @ColumnInfo(name = "name")
-    private String name;
+    private final String name;
     @ColumnInfo(name = "cat_name")
-    private String catName;
+    private final String catName;
     @ColumnInfo(name = "description")
-    private String description;
+    private final String description;
     @ColumnInfo(name = "favorite")
     private int favorite;
     @ColumnInfo(name = "update_date")
-    private String updateDate;
+    private final String updateDate;
     @ColumnInfo(name = "long_description")
-    private String longDescription;
+    private final String longDescription;
     @ColumnInfo(name = "abv")
-    private String abv;
+    private final String abv;
     @ColumnInfo(name = "image_url")
-    private String imageURL;
+    private final String imageURL;
+    @ColumnInfo(name = "styleName")
+    private final String styleName;
 
-    public BeerRoom(@NonNull String id, @NonNull String name, String catName, String description, int favorite, String updateDate, String longDescription, String abv, String imageURL) {
+    public BeerRoom(@NonNull String id, @NonNull String name, String catName, String description, int favorite, String updateDate, String longDescription, String abv, String imageURL, String styleName) {
         this.id = id;
         this.name = name;
         this.catName = catName;
@@ -42,6 +48,7 @@ public class BeerRoom implements Parcelable {
         this.longDescription = longDescription;
         this.abv = abv;
         this.imageURL = imageURL;
+        this.styleName = styleName;
     }
 
     public BeerRoom(@NonNull Beer b) {
@@ -65,11 +72,14 @@ public class BeerRoom implements Parcelable {
 
         if(b.getLabels() != null && b.getLabels().getMedium() != null) this.imageURL = b.getLabels().getMedium();
         else this.imageURL = "";
+
+        if(b.getStyle() != null && b.getStyle().getCategory() != null && b.getStyle().getCategory().getName() != null) this.styleName = b.getStyle().getCategory().getName();
+        else this.styleName = "";
     }
 
     protected BeerRoom(Parcel in) {
-        id = in.readString();
-        name = in.readString();
+        id = Objects.requireNonNull(in.readString());
+        name = Objects.requireNonNull(in.readString());
         catName = in.readString();
         description = in.readString();
         favorite = in.readInt();
@@ -77,6 +87,26 @@ public class BeerRoom implements Parcelable {
         longDescription = in.readString();
         abv = in.readString();
         imageURL = in.readString();
+        styleName = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(catName);
+        dest.writeString(description);
+        dest.writeInt(favorite);
+        dest.writeString(updateDate);
+        dest.writeString(longDescription);
+        dest.writeString(abv);
+        dest.writeString(imageURL);
+        dest.writeString(styleName);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<BeerRoom> CREATOR = new Creator<BeerRoom>() {
@@ -131,6 +161,11 @@ public class BeerRoom implements Parcelable {
         return updateDate;
     }
 
+    public String getStyleName() {
+        return styleName;
+    }
+
+    @NotNull
     @Override
     public String toString() {
         return "BeerRoom{" +
@@ -142,21 +177,4 @@ public class BeerRoom implements Parcelable {
                 '}';
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(id);
-        parcel.writeString(name);
-        parcel.writeString(catName);
-        parcel.writeString(description);
-        parcel.writeInt(favorite);
-        parcel.writeString(updateDate);
-        parcel.writeString(longDescription);
-        parcel.writeString(abv);
-        parcel.writeString(imageURL);
-    }
 }

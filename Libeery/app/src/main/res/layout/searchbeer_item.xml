@@ -34,27 +34,29 @@
             tools:text="IPA" />
 
         <TextView
-            android:id="@+id/catNameTextView"
+            android:id="@+id/styleNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
             android:maxLength="24"
             android:textColor="#000000"
-            app:layout_constraintBottom_toTopOf="@+id/countryTextView"
+            app:layout_constraintBottom_toTopOf="@+id/abvTextView"
             app:layout_constraintStart_toStartOf="@+id/nameTextView"
             app:layout_constraintTop_toBottomOf="@+id/nameTextView"
-            app:layout_constraintVertical_bias="0.461"
+            app:layout_constraintVertical_bias="0.0"
             tools:text="North American Ale" />
 
         <TextView
-            android:id="@+id/countryTextView"
+            android:id="@+id/abvTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:layout_marginBottom="16dp"
             android:maxLength="32"
             android:textColor="#000000"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/catNameTextView"
+            app:layout_constraintStart_toStartOf="@+id/styleNameTextView"
             tools:text="United States" />
 
         <ImageView
