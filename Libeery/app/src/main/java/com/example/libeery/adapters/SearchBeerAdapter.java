@@ -2,7 +2,6 @@ package com.example.libeery.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -113,15 +112,12 @@ public class SearchBeerAdapter extends RecyclerView.Adapter<SearchBeerAdapter.Vi
                     viewModel.delete(beer);
             });
 
-           itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Context context = v.getContext();
-                    Intent intent = new Intent(context, DetailsBeerView.class);
-                    intent.putExtra("beer", beer);
-                    context.startActivity(intent);
-                }
-            });
+           itemView.setOnClickListener(v -> {
+               Context context = v.getContext();
+               Intent intent = new Intent(context, DetailsBeerView.class);
+               intent.putExtra("beer", beer);
+               context.startActivity(intent);
+           });
 
         }
 

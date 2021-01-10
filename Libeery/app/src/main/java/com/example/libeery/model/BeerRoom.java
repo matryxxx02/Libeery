@@ -17,26 +17,26 @@ public class BeerRoom implements Parcelable {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "id")
-    private String id;
+    private final String id;
     @NonNull
     @ColumnInfo(name = "name")
-    private String name;
+    private final String name;
     @ColumnInfo(name = "cat_name")
-    private String catName;
+    private final String catName;
     @ColumnInfo(name = "description")
-    private String description;
+    private final String description;
     @ColumnInfo(name = "favorite")
     private int favorite;
     @ColumnInfo(name = "update_date")
-    private String updateDate;
+    private final String updateDate;
     @ColumnInfo(name = "long_description")
-    private String longDescription;
+    private final String longDescription;
     @ColumnInfo(name = "abv")
-    private String abv;
+    private final String abv;
     @ColumnInfo(name = "image_url")
-    private String imageURL;
+    private final String imageURL;
     @ColumnInfo(name = "styleName")
-    private String styleName;
+    private final String styleName;
 
     public BeerRoom(@NonNull String id, @NonNull String name, String catName, String description, int favorite, String updateDate, String longDescription, String abv, String imageURL, String styleName) {
         this.id = id;

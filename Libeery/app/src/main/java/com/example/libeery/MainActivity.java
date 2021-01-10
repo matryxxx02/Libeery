@@ -1,29 +1,27 @@
 package com.example.libeery;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.util.SparseArray;
 
 import com.example.libeery.view.FavoritesFragment;
-import com.example.libeery.view.ProfileFragment;
 import com.example.libeery.view.SearchBeerFragment;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
+
+import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends AppCompatActivity {
 
     private final static String FRAGMENT_STORED_KEY = "Fragment_Stored";
 
-    private ChipNavigationBar navBar;
     private Fragment currentFragment;
     private SparseArray<Fragment> fragmentArray;
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NotNull Bundle outState) {
         if(currentFragment != null){
             getSupportFragmentManager().putFragment(outState, FRAGMENT_STORED_KEY, currentFragment);
         }
@@ -36,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         fragmentArray = new SparseArray<>(3);
-        navBar = findViewById(R.id.navBar);
+        ChipNavigationBar navBar = findViewById(R.id.navBar);
 
         if(savedInstanceState != null){
             currentFragment = getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_STORED_KEY);

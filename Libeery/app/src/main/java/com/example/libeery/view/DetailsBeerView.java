@@ -1,6 +1,5 @@
 package com.example.libeery.view;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.libeery.R;
-import com.example.libeery.model.Beer;
 import com.example.libeery.model.BeerRoom;
 import com.example.libeery.viewModel.BeersViewModel;
 import com.example.libeery.viewModel.BeersViewModelFactory;
@@ -26,7 +24,6 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 
